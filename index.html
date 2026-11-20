@@ -609,6 +609,59 @@ h1 {
     background: rgba(255, 255, 255, 0.08);
 }
 
+/* Solo Fecha requerida y Hora estimada segmentadas con salto automático */
+.gng-grupo-segmentado {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.05);
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.gng-grupo-segmentado:focus-within {
+    border-color: #f5821f;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.gng-grupo-segmentado input {
+    border: none !important;
+    background: transparent !important;
+    padding: 6px 2px !important;
+    text-align: center;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.gng-grupo-segmentado input.seg-2 {
+    width: 34px;
+}
+
+.gng-grupo-segmentado input.seg-4 {
+    width: 54px;
+}
+
+.gng-grupo-segmentado span.sep {
+    color: #ffad4b;
+    font-weight: bold;
+    user-select: none;
+}
+
+.gng-grupo-segmentado select.sel-ampm {
+    margin-left: auto;
+    width: 74px;
+    padding: 6px 8px !important;
+    border-radius: 7px !important;
+    border: 1px solid rgba(255, 169, 69, 0.45) !important;
+    background: rgba(245, 130, 31, 0.18) !important;
+    color: #ffcf8b !important;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+}
+
 .gng-nota {
     margin-top: 14px;
     padding: 10px 14px;
@@ -882,13 +935,27 @@ h1 {
                 </div>
 
                 <div class="gng-campo">
-                    <label for="gngFecha">Fecha requerida *</label>
-                    <input type="date" id="gngFecha" name="fecha" required>
+                    <label for="gngDia">Fecha requerida *</label>
+                    <div class="gng-grupo-segmentado">
+                        <input type="text" id="gngDia" class="seg-2" inputmode="numeric" maxlength="2" placeholder="DD" aria-label="Día" required>
+                        <span class="sep">/</span>
+                        <input type="text" id="gngMes" class="seg-2" inputmode="numeric" maxlength="2" placeholder="MM" aria-label="Mes" required>
+                        <span class="sep">/</span>
+                        <input type="text" id="gngAnio" class="seg-4" inputmode="numeric" maxlength="4" placeholder="AAAA" aria-label="Año" required>
+                    </div>
                 </div>
 
                 <div class="gng-campo">
-                    <label for="gngHora">Hora estimada *</label>
-                    <input type="time" id="gngHora" name="hora" required>
+                    <label for="gngHoraNum">Hora estimada *</label>
+                    <div class="gng-grupo-segmentado">
+                        <input type="text" id="gngHoraNum" class="seg-2" inputmode="numeric" maxlength="2" placeholder="HH" aria-label="Hora" required>
+                        <span class="sep">:</span>
+                        <input type="text" id="gngMinNum" class="seg-2" inputmode="numeric" maxlength="2" placeholder="MM" aria-label="Minutos" required>
+                        <select id="gngAmPm" class="sel-ampm" aria-label="AM o PM">
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="gng-campo">
@@ -1037,10 +1104,48 @@ setInterval(cambiarFotografia, 20000);
     const btnWsp = document.getElementById("gngEnviarWsp");
     const btnMail = document.getElementById("gngEnviarMail");
     const estadoEnvio = document.getElementById("gngEstadoEnvio");
-    const inputFecha = document.getElementById("gngFecha");
 
-    const hoy = new Date().toISOString().split("T")[0];
-    if (inputFecha) inputFecha.min = hoy;
+    const inpDia = document.getElementById("gngDia");
+    const inpMes = document.getElementById("gngMes");
+    const inpAnio = document.getElementById("gngAnio");
+    const inpHoraNum = document.getElementById("gngHoraNum");
+    const inpMinNum = document.getElementById("gngMinNum");
+    const selAmPm = document.getElementById("gngAmPm");
+
+    function configurarAutoSalto(actual, siguiente, maxLen, minVal, maxVal, esSelect) {
+        actual.addEventListener("input", function() {
+            this.value = this.value.replace(/\D/g, "");
+            if (this.value.length === maxLen) {
+                let num = parseInt(this.value, 10);
+                if (!isNaN(num)) {
+                    if (num < minVal) this.value = String(minVal).padStart(maxLen, "0");
+                    if (num > maxVal) this.value = String(maxVal).padStart(maxLen, "0");
+                }
+                if (siguiente) {
+                    siguiente.focus();
+                    if (!esSelect && siguiente.select) {
+                        siguiente.select();
+                    } else if (esSelect && typeof siguiente.showPicker === "function") {
+                        try { siguiente.showPicker(); } catch (_) {}
+                    }
+                }
+            }
+        });
+
+        actual.addEventListener("blur", function() {
+            if (this.value.length === 1 && maxLen === 2) {
+                let num = parseInt(this.value, 10);
+                if (num < minVal) num = minVal;
+                this.value = String(num).padStart(2, "0");
+            }
+        });
+    }
+
+    configurarAutoSalto(inpDia, inpMes, 2, 1, 31, false);
+    configurarAutoSalto(inpMes, inpAnio, 2, 1, 12, false);
+    configurarAutoSalto(inpAnio, inpHoraNum, 4, 2026, 2035, false);
+    configurarAutoSalto(inpHoraNum, inpMinNum, 2, 1, 12, false);
+    configurarAutoSalto(inpMinNum, selAmPm, 2, 0, 59, true);
 
     function mostrarEstado(tipo, texto) {
         estadoEnvio.className = "gng-estado-envio visible " + tipo;
@@ -1076,13 +1181,20 @@ setInterval(cambiarFotografia, 20000);
     });
 
     function obtenerDatos() {
+        const dia = inpDia.value.padStart(2, "0");
+        const mes = inpMes.value.padStart(2, "0");
+        const anio = inpAnio.value;
+        const hora = inpHoraNum.value.padStart(2, "0");
+        const min = inpMinNum.value.padStart(2, "0");
+        const ampm = selAmPm.value;
+
         return {
             nombre: document.getElementById("gngNombre").value.trim(),
             telefono: document.getElementById("gngTelefono").value.trim(),
             correo: document.getElementById("gngCorreo").value.trim(),
             servicio: document.getElementById("gngServicio").value,
-            fecha: document.getElementById("gngFecha").value,
-            hora: document.getElementById("gngHora").value,
+            fecha: dia + "/" + mes + "/" + anio,
+            hora: hora + ":" + min + " " + ampm,
             origen: document.getElementById("gngOrigen").value.trim(),
             destino: document.getElementById("gngDestino").value.trim(),
             pasajeros: document.getElementById("gngPasajeros").value.trim(),
@@ -1099,7 +1211,7 @@ setInterval(cambiarFotografia, 20000);
             "• *Teléfono:* " + datos.telefono,
             "• *Correo:* " + datos.correo,
             "• *Servicio:* " + datos.servicio,
-            "• *Fecha y Hora:* " + datos.fecha + " a las " + datos.hora + " hrs",
+            "• *Fecha y Hora:* " + datos.fecha + " a las " + datos.hora,
             "• *Origen:* " + datos.origen,
             "• *Destino:* " + datos.destino,
             "• *Pasajeros / Carga:* " + datos.pasajeros,
@@ -1141,7 +1253,7 @@ setInterval(cambiarFotografia, 20000);
                     "Correo Cliente": datos.correo,
                     "Tipo de Servicio": datos.servicio,
                     "Fecha Requerida": datos.fecha,
-                    "Hora Estimada": datos.hora + " hrs",
+                    "Hora Estimada": datos.hora,
                     "Punto de Origen": datos.origen,
                     "Punto de Destino": datos.destino,
                     "Pasajeros o Bultos": datos.pasajeros,
@@ -1155,10 +1267,9 @@ setInterval(cambiarFotografia, 20000);
             if (resp.ok && resultado.success !== "false") {
                 mostrarEstado(
                     "ok",
-                    "Solicitud enviada correctamente a " + GNG_CORREO + ". Revisa tu correo (incluida la carpeta Spam si es la primera vez) para confirmar la activación del formulario."
+                    "¡Solicitud enviada correctamente a " + GNG_CORREO + "! Revisa tu bandeja de entrada."
                 );
                 form.reset();
-                if (inputFecha) inputFecha.min = hoy;
             } else {
                 throw new Error(resultado.message || "No se pudo completar el envío.");
             }
