@@ -620,6 +620,31 @@ h1 {
     line-height: 1.45;
 }
 
+.gng-estado-envio {
+    display: none;
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    line-height: 1.45;
+}
+
+.gng-estado-envio.visible {
+    display: block;
+}
+
+.gng-estado-envio.ok {
+    background: rgba(34, 197, 94, 0.14);
+    border: 1px solid rgba(34, 197, 94, 0.45);
+    color: #bbf7d0;
+}
+
+.gng-estado-envio.error {
+    background: rgba(239, 68, 68, 0.14);
+    border: 1px solid rgba(239, 68, 68, 0.45);
+    color: #fecaca;
+}
+
 .gng-acciones {
     margin-top: 18px;
     display: grid;
@@ -635,10 +660,15 @@ h1 {
     font-weight: 700;
     letter-spacing: 0.04em;
     cursor: pointer;
-    transition: transform 0.15s, filter 0.2s;
+    transition: transform 0.15s, filter 0.2s, opacity 0.2s;
 }
 
-.gng-btn:hover {
+.gng-btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.gng-btn:hover:not(:disabled) {
     transform: translateY(-1px);
     filter: brightness(1.06);
 }
@@ -891,11 +921,13 @@ h1 {
                 Al enviar su solicitud, nuestro equipo verificará disponibilidad con proveedores asociados y le responderá a la brevedad con la cotización formal.
             </div>
 
+            <div id="gngEstadoEnvio" class="gng-estado-envio" role="status" aria-live="polite"></div>
+
             <div class="gng-acciones">
                 <button type="button" id="gngEnviarWsp" class="gng-btn gng-btn-wsp">
                     Enviar por WhatsApp
                 </button>
-                <button type="submit" class="gng-btn gng-btn-mail">
+                <button type="submit" id="gngEnviarMail" class="gng-btn gng-btn-mail">
                     Enviar por Correo
                 </button>
             </div>
@@ -996,19 +1028,33 @@ setInterval(cambiarFotografia, 20000);
 (function() {
     const GNG_WHATSAPP = "56962301001";
     const GNG_CORREO = "reservas@gngnorte.cl";
+    const GNG_ENDPOINT = "https://formsubmit.co/ajax/" + GNG_CORREO;
 
     const modal = document.getElementById("gngModalReservas");
     const btnAbrir = document.getElementById("abrirReservasGNG");
     const btnCerrar = document.getElementById("cerrarReservasGNG");
     const form = document.getElementById("gngFormReserva");
     const btnWsp = document.getElementById("gngEnviarWsp");
+    const btnMail = document.getElementById("gngEnviarMail");
+    const estadoEnvio = document.getElementById("gngEstadoEnvio");
     const inputFecha = document.getElementById("gngFecha");
 
     const hoy = new Date().toISOString().split("T")[0];
     if (inputFecha) inputFecha.min = hoy;
 
+    function mostrarEstado(tipo, texto) {
+        estadoEnvio.className = "gng-estado-envio visible " + tipo;
+        estadoEnvio.textContent = texto;
+    }
+
+    function limpiarEstado() {
+        estadoEnvio.className = "gng-estado-envio";
+        estadoEnvio.textContent = "";
+    }
+
     function abrirModal(e) {
         if (e) e.preventDefault();
+        limpiarEstado();
         modal.classList.add("abierto");
         modal.setAttribute("aria-hidden", "false");
     }
@@ -1029,8 +1075,8 @@ setInterval(cambiarFotografia, 20000);
         if (e.key === "Escape" && modal.classList.contains("abierto")) cerrarModal();
     });
 
-    function construirResumen() {
-        const datos = {
+    function obtenerDatos() {
+        return {
             nombre: document.getElementById("gngNombre").value.trim(),
             telefono: document.getElementById("gngTelefono").value.trim(),
             correo: document.getElementById("gngCorreo").value.trim(),
@@ -1043,7 +1089,9 @@ setInterval(cambiarFotografia, 20000);
             vuelo: document.getElementById("gngVuelo").value.trim() || "No especificado",
             detalle: document.getElementById("gngDetalle").value.trim() || "Sin observaciones adicionales"
         };
+    }
 
+    function construirResumen(datos) {
         return [
             "*SOLICITUD DE RESERVA - GNG GESTIÓN NORTE SpA*",
             "----------------------------------------",
@@ -1062,17 +1110,67 @@ setInterval(cambiarFotografia, 20000);
 
     btnWsp.addEventListener("click", function() {
         if (!form.reportValidity()) return;
-        const mensaje = encodeURIComponent(construirResumen());
+        const datos = obtenerDatos();
+        const mensaje = encodeURIComponent(construirResumen(datos));
         window.open("https://wa.me/" + GNG_WHATSAPP + "?text=" + mensaje, "_blank", "noopener");
     });
 
-    form.addEventListener("submit", function(e) {
+    form.addEventListener("submit", async function(e) {
         e.preventDefault();
-        const servicio = document.getElementById("gngServicio").value;
-        const nombre = document.getElementById("gngNombre").value.trim();
-        const asunto = encodeURIComponent("Solicitud de Reserva GNG: " + servicio + " - " + nombre);
-        const cuerpo = encodeURIComponent(construirResumen().replace(/\*/g, ""));
-        window.location.href = "mailto:" + GNG_CORREO + "?subject=" + asunto + "&body=" + cuerpo;
+        if (!form.reportValidity()) return;
+
+        const datos = obtenerDatos();
+        const textoOriginal = btnMail.textContent;
+        btnMail.disabled = true;
+        btnMail.textContent = "Enviando...";
+        limpiarEstado();
+
+        try {
+            const resp = await fetch(GNG_ENDPOINT, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({
+                    _subject: "Solicitud de Reserva GNG: " + datos.servicio + " - " + datos.nombre,
+                    _replyto: datos.correo,
+                    _template: "table",
+                    "Cliente o Empresa": datos.nombre,
+                    "Teléfono / WhatsApp": datos.telefono,
+                    "Correo Cliente": datos.correo,
+                    "Tipo de Servicio": datos.servicio,
+                    "Fecha Requerida": datos.fecha,
+                    "Hora Estimada": datos.hora + " hrs",
+                    "Punto de Origen": datos.origen,
+                    "Punto de Destino": datos.destino,
+                    "Pasajeros o Bultos": datos.pasajeros,
+                    "Vuelo o Referencia": datos.vuelo,
+                    "Observaciones": datos.detalle
+                })
+            });
+
+            const resultado = await resp.json();
+
+            if (resp.ok && resultado.success !== "false") {
+                mostrarEstado(
+                    "ok",
+                    "Solicitud enviada correctamente a " + GNG_CORREO + ". Revisa tu correo (incluida la carpeta Spam si es la primera vez) para confirmar la activación del formulario."
+                );
+                form.reset();
+                if (inputFecha) inputFecha.min = hoy;
+            } else {
+                throw new Error(resultado.message || "No se pudo completar el envío.");
+            }
+        } catch (err) {
+            mostrarEstado(
+                "error",
+                "No se pudo enviar automáticamente en este momento. Puedes usar el botón 'Enviar por WhatsApp' o escribir directamente a " + GNG_CORREO + "."
+            );
+        } finally {
+            btnMail.disabled = false;
+            btnMail.textContent = textoOriginal;
+        }
     });
 })();
 </script>
