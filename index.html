@@ -1,1 +1,595 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090d">
+<title>[NOMBRE DE TU EMPRESA] - Sitio Oficial</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: #08090d;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
+    color: white;
+}
+
+/* =================================
+   FOTOGRAFIAS
+================================= */
+
+.fondo {
+    position: fixed;
+    inset: 0;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    transition: opacity 2s ease-in-out;
+    z-index: 0;
+}
+
+#fondo1 { opacity: 1; }
+#fondo2 { opacity: 0; }
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.52);
+    z-index: 1;
+    cursor: pointer;
+}
+
+/* =================================
+   CREDITOS AMARILLOS A LA IZQUIERDA
+================================= */
+
+.capa-creditos {
+    position: fixed;
+    top: 130px;
+    left: 34px;
+    bottom: 24px;
+    width: 600px;
+    max-width: calc(100vw - 825px);
+    background: transparent;
+    pointer-events: none;
+    z-index: 4;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 10%,
+        black 90%,
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 10%,
+        black 90%,
+        transparent 100%
+    );
+}
+
+.bloque-creditos {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    text-align: left;
+    color: rgba(255, 221, 51, 0.86);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
+    animation: rodarCreditos 85s linear infinite;
+    pointer-events: auto;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.25s ease;
+}
+
+.capa-creditos.pausado .bloque-creditos {
+    animation-play-state: paused;
+    color: rgba(255, 232, 95, 0.98);
+}
+
+.indicador-pausa {
+    position: fixed;
+    bottom: 18px;
+    left: 34px;
+    z-index: 6;
+    padding: 6px 12px;
+    border-radius: 14px;
+    background: rgba(15, 17, 23, 0.85);
+    border: 1px solid rgba(255, 215, 0, 0.45);
+    color: #ffd700;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.indicador-pausa.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.bloque-creditos .credito-titulo {
+    margin: 0 0 6px 0;
+    font-size: 38px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    color: rgba(255, 215, 0, 0.95);
+}
+
+.bloque-creditos .credito-subtitulo {
+    margin: 0 0 28px 0;
+    font-size: 17px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: rgba(255, 228, 92, 0.9);
+}
+
+.bloque-creditos h3 {
+    margin: 28px 0 10px 0;
+    font-size: 24px;
+    color: rgba(255, 215, 0, 0.97);
+}
+
+.bloque-creditos p {
+    margin: 0 0 20px 0;
+    font-size: 22px;
+    line-height: 1.55;
+    color: rgba(255, 230, 85, 0.85);
+}
+
+.bloque-creditos .credito-cierre {
+    margin-top: 26px;
+    font-size: 24px;
+    font-weight: bold;
+    color: rgba(255, 215, 0, 0.97);
+}
+
+@keyframes rodarCreditos {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(calc(-100% - 100vh)); }
+}
+
+/* =================================
+   RELOJ DIGITAL SIETE SEGMENTOS
+================================= */
+
+.reloj {
+    position: fixed;
+    top: 28px;
+    left: 32px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.digito {
+    position: relative;
+    width: 37px;
+    height: 65px;
+}
+
+.seg {
+    position: absolute;
+    background: #382719;
+    opacity: .55;
+}
+
+.seg.encendido {
+    background: #ff9b35;
+    opacity: 1;
+    filter:
+        drop-shadow(0 0 4px #ff791b)
+        drop-shadow(0 0 9px rgba(255,140,35,.65));
+}
+
+.seg.a, .seg.g, .seg.d {
+    width: 25px;
+    height: 6px;
+    left: 6px;
+    clip-path: polygon(12% 0,88% 0,100% 50%,88% 100%,12% 100%,0 50%);
+}
+
+.seg.a { top: 0; }
+.seg.g { top: 29px; }
+.seg.d { bottom: 0; }
+
+.seg.b, .seg.c, .seg.e, .seg.f {
+    width: 6px;
+    height: 25px;
+    clip-path: polygon(50% 0,100% 12%,100% 88%,50% 100%,0 88%,0 12%);
+}
+
+.seg.f { top: 4px; left: 1px; }
+.seg.b { top: 4px; right: 1px; }
+.seg.e { bottom: 4px; left: 1px; }
+.seg.c { bottom: 4px; right: 1px; }
+
+.dos-puntos {
+    height: 65px;
+    width: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    animation: parpadeo 1s steps(1) infinite;
+}
+
+.dos-puntos span {
+    width: 6px;
+    height: 6px;
+    background: #ff9b35;
+    border-radius: 1px;
+    box-shadow: 0 0 8px #ff791b;
+}
+
+@keyframes parpadeo {
+    50% { opacity: .15; }
+}
+
+.etiqueta-reloj {
+    position: fixed;
+    top: 101px;
+    left: 34px;
+    z-index: 5;
+    color: #ffad4b;
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 1.2px;
+    white-space: nowrap;
+}
+
+/* =================================
+   TARJETA PRINCIPAL DE EMPRESA
+================================= */
+
+.tarjeta-empresa {
+    position: fixed;
+    z-index: 3;
+    right: 35px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 760px;
+    min-height: 230px;
+    padding: 28px 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+
+    background: linear-gradient(120deg, rgba(28,30,37,.97), rgba(9,10,15,.97));
+    border: 1px solid rgba(255,169,69,.38);
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.8), 0 0 30px rgba(255,115,20,.10);
+}
+
+.identidad {
+    flex: 1.1;
+    min-width: 190px;
+}
+
+.marca {
+    color: #aaaeb7;
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+h1 {
+    color: #ffad4b;
+    font-size: 26px;
+    letter-spacing: 0.8px;
+    margin: 0;
+}
+
+.subtitulo {
+    margin-top: 9px;
+    font-size: 10px;
+    color: #b7b8c0;
+    letter-spacing: 1.4px;
+}
+
+.etiqueta-estado {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 18px;
+    padding: 7px 12px;
+    border-radius: 20px;
+    color: #ffad4b;
+    font-size: 10px;
+    letter-spacing: 1px;
+    font-weight: bold;
+    background: rgba(255,100,30,.12);
+    border: 1px solid rgba(255,130,40,.35);
+}
+
+.punto {
+    width: 7px;
+    height: 7px;
+    background: #ff642c;
+    border-radius: 50%;
+    box-shadow: 0 0 9px #ff642c;
+    animation: pulso 1.5s infinite;
+}
+
+@keyframes pulso {
+    50% { opacity: .3; }
+}
+
+.servicios {
+    flex: 1;
+    text-align: left;
+    border-left: 1px solid rgba(255,169,69,.18);
+    padding-left: 22px;
+}
+
+.servicios-titulo {
+    color: #ffad4b;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+}
+
+.servicios ul {
+    margin: 0;
+    padding-left: 18px;
+    color: #d5d7de;
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+.contacto-box {
+    flex: 0.9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-contacto {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    padding: 13px 20px;
+    border-radius: 30px;
+    background: linear-gradient(145deg, #ffc16b, #f47725, #d94b16);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 25px rgba(255,100,20,.35);
+    transition: transform .2s;
+}
+
+.btn-contacto:hover {
+    transform: scale(1.05);
+}
+
+.dato-extra {
+    color: #b7b8c0;
+    font-size: 10px;
+    text-align: center;
+    letter-spacing: 0.8px;
+}
+
+.pie {
+    position: absolute;
+    right: 29px;
+    bottom: 9px;
+    color: #85868c;
+    font-size: 8px;
+    letter-spacing: 1px;
+}
+
+.pie strong {
+    color: #ffad4b;
+}
+
+@media (max-width: 1440px) {
+    .capa-creditos {
+        width: 470px;
+        max-width: calc(100vw - 825px);
+    }
+    .bloque-creditos .credito-titulo { font-size: 30px; }
+    .bloque-creditos h3, .bloque-creditos .credito-cierre { font-size: 20px; }
+    .bloque-creditos p { font-size: 19px; }
+}
+
+@media (max-width: 850px) {
+    body { overflow: auto; }
+    .tarjeta-empresa {
+        position: static;
+        transform: none;
+        width: calc(100% - 30px);
+        margin: 135px auto 24px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .servicios {
+        border-left: none;
+        border-top: 1px solid rgba(255,169,69,.18);
+        padding-left: 0;
+        padding-top: 16px;
+    }
+    .capa-creditos {
+        position: static;
+        width: calc(100% - 30px);
+        max-width: none;
+        height: 260px;
+        margin: 0 auto 30px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="fondo1" class="fondo"></div>
+<div id="fondo2" class="fondo"></div>
+<div class="overlay" id="overlayFondo"></div>
+
+<!-- CREDITOS / INFORMACION DE LA EMPRESA -->
+<div class="capa-creditos" id="capaCreditos" title="Haz clic para pausar o reanudar la lectura">
+    <div class="bloque-creditos" id="bloqueCreditos">
+        <div class="credito-titulo">[NOMBRE DE TU EMPRESA]</div>
+        <div class="credito-subtitulo">[TU ESLOGAN O RUBRO]</div>
+
+        <h3>Quiénes somos</h3>
+        <p>[Escribe aquí una breve presentación de tu empresa, tu experiencia y lo que hacen cada día.]</p>
+
+        <h3>Nuestra misión</h3>
+        <p>[Explica qué soluciona tu empresa y qué valor entregas a tus clientes.]</p>
+
+        <h3>Compromiso y calidad</h3>
+        <p>[Cuéntales sobre tu forma de trabajar, cumplimiento y atención personalizada.]</p>
+
+        <div class="credito-cierre">[NOMBRE DE TU EMPRESA] — [CIUDAD / CHILE]</div>
+    </div>
+</div>
+
+<div class="indicador-pausa" id="indicadorPausa">
+    ⏸ LECTURA PAUSADA (CLIC PARA SEGUIR)
+</div>
+
+<div class="reloj" id="reloj" aria-label="Hora de Chile"></div>
+<div class="etiqueta-reloj" id="fecha">CARGANDO FECHA...</div>
+
+<main class="tarjeta-empresa">
+    <section class="identidad">
+        <div class="marca">EMPRESA · SERVICIOS</div>
+        <h1>[NOMBRE DE TU EMPRESA]</h1>
+        <div class="subtitulo">[ESLOGAN O ÁREA DE NEGOCIO]</div>
+        <div class="etiqueta-estado">
+            <span class="punto"></span>
+            ATENCIÓN ACTIVA
+        </div>
+    </section>
+
+    <section class="servicios">
+        <div class="servicios-titulo">SERVICIOS PRINCIPALES</div>
+        <ul>
+            <li>[Servicio o producto 1]</li>
+            <li>[Servicio o producto 2]</li>
+            <li>[Servicio o producto 3]</li>
+        </ul>
+    </section>
+
+    <section class="contacto-box">
+        <a class="btn-contacto" href="https://wa.me/56900000000" target="_blank" rel="noopener">
+            CONTACTAR POR WHATSAPP
+        </a>
+        <div class="dato-extra">[correo@tuempresa.cl]</div>
+        <div class="dato-extra">[Ciudad, Región · Chile]</div>
+    </section>
+
+    <div class="pie">SITIO OFICIAL · <strong>[NOMBRE DE TU EMPRESA]</strong></div>
+</main>
+
+<script>
+// Pausa / reanudación al clic
+const capaCreditos = document.getElementById("capaCreditos");
+const bloqueCreditos = document.getElementById("bloqueCreditos");
+const overlayFondo = document.getElementById("overlayFondo");
+const indicadorPausa = document.getElementById("indicadorPausa");
+
+function alternarPausaCreditos() {
+    const estaPausado = capaCreditos.classList.toggle("pausado");
+    indicadorPausa.classList.toggle("visible", estaPausado);
+}
+bloqueCreditos.addEventListener("click", alternarPausaCreditos);
+overlayFondo.addEventListener("click", alternarPausaCreditos);
+
+// Reloj digital
+const reloj = document.getElementById("reloj");
+const segmentos = ["a","b","c","d","e","f","g"];
+const numeros = {
+    0: ["a","b","c","d","e","f"], 1: ["b","c"], 2: ["a","b","g","e","d"],
+    3: ["a","b","g","c","d"], 4: ["f","g","b","c"], 5: ["a","f","g","c","d"],
+    6: ["a","f","g","e","c","d"], 7: ["a","b","c"], 8: ["a","b","c","d","e","f","g"],
+    9: ["a","b","c","d","f","g"]
+};
+
+function crearDigito(numero) {
+    const digito = document.createElement("div");
+    digito.className = "digito";
+    segmentos.forEach(function(nombre) {
+        const pieza = document.createElement("span");
+        pieza.className = "seg " + nombre;
+        if (numeros[numero].includes(nombre)) pieza.classList.add("encendido");
+        digito.appendChild(pieza);
+    });
+    return digito;
+}
+
+function dibujarReloj() {
+    const partes = new Intl.DateTimeFormat("es-CL", {
+        timeZone: "America/Santiago", hour: "2-digit", minute: "2-digit", hourCycle: "h23"
+    }).formatToParts(new Date());
+    const hora = partes.find(p => p.type === "hour").value;
+    const minuto = partes.find(p => p.type === "minute").value;
+    reloj.innerHTML = "";
+    reloj.appendChild(crearDigito(hora[0]));
+    reloj.appendChild(crearDigito(hora[1]));
+    const dosPuntos = document.createElement("div");
+    dosPuntos.className = "dos-puntos";
+    dosPuntos.innerHTML = "<span></span><span></span>";
+    reloj.appendChild(dosPuntos);
+    reloj.appendChild(crearDigito(minuto[0]));
+    reloj.appendChild(crearDigito(minuto[1]));
+}
+dibujarReloj();
+setInterval(dibujarReloj, 1000);
+
+function dibujarFecha() {
+    const fecha = new Intl.DateTimeFormat("es-CL", {
+        timeZone: "America/Santiago", weekday: "long", day: "numeric", month: "long", year: "numeric"
+    }).format(new Date());
+    document.getElementById("fecha").textContent = fecha.toUpperCase();
+}
+dibujarFecha();
+setInterval(dibujarFecha, 60000);
+
+// Rotación de fotos de fondo
+const imagenes = [
+    "foto 1.png"
+];
+const fondo1 = document.getElementById("fondo1");
+const fondo2 = document.getElementById("fondo2");
+let indiceFoto = 0;
+let fondoActivo = 1;
+fondo1.style.backgroundImage = `url("${imagenes[0]}")`;
+imagenes.forEach(src => { const img = new Image(); img.src = src; });
+
+function cambiarFotografia() {
+    indiceFoto = (indiceFoto + 1) % imagenes.length;
+    const siguiente = fondoActivo === 1 ? fondo2 : fondo1;
+    const anterior = fondoActivo === 1 ? fondo1 : fondo2;
+    siguiente.style.backgroundImage = `url("${imagenes[indiceFoto]}")`;
+    siguiente.style.opacity = "1";
+    anterior.style.opacity = "0";
+    fondoActivo = fondoActivo === 1 ? 2 : 1;
+}
+setInterval(cambiarFotografia, 15 * 60 * 1000);
+</script>
+
+</body>
+</html>
