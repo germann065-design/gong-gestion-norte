@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#08090d">
-<title>[NOMBRE DE TU EMPRESA] - Sitio Oficial</title>
+<title>GNG GESTIÓN NORTE SpA - Un Servicio, Múltiples Soluciones</title>
 
 <style>
 *, *::before, *::after {
@@ -64,15 +64,15 @@ body {
     -webkit-mask-image: linear-gradient(
         to bottom,
         transparent 0%,
-        black 10%,
-        black 90%,
+        black 8%,
+        black 92%,
         transparent 100%
     );
     mask-image: linear-gradient(
         to bottom,
         transparent 0%,
-        black 10%,
-        black 90%,
+        black 8%,
+        black 92%,
         transparent 100%
     );
 }
@@ -83,9 +83,9 @@ body {
     top: 100%;
     width: 100%;
     text-align: left;
-    color: rgba(255, 221, 51, 0.86);
+    color: rgba(255, 221, 51, 0.88);
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
-    animation: rodarCreditos 85s linear infinite;
+    animation: rodarCreditos 135s linear infinite;
     pointer-events: auto;
     cursor: pointer;
     user-select: none;
@@ -94,7 +94,7 @@ body {
 
 .capa-creditos.pausado .bloque-creditos {
     animation-play-state: paused;
-    color: rgba(255, 232, 95, 0.98);
+    color: rgba(255, 235, 105, 0.98);
 }
 
 .indicador-pausa {
@@ -123,38 +123,64 @@ body {
 
 .bloque-creditos .credito-titulo {
     margin: 0 0 6px 0;
-    font-size: 38px;
+    font-size: 36px;
     font-weight: bold;
     letter-spacing: 1.5px;
-    color: rgba(255, 215, 0, 0.95);
+    color: rgba(255, 215, 0, 0.97);
 }
 
 .bloque-creditos .credito-subtitulo {
-    margin: 0 0 28px 0;
-    font-size: 17px;
+    margin: 0 0 26px 0;
+    font-size: 16px;
     font-weight: bold;
     letter-spacing: 2px;
-    color: rgba(255, 228, 92, 0.9);
+    color: rgba(255, 228, 92, 0.92);
+}
+
+.bloque-creditos h2 {
+    margin: 34px 0 12px 0;
+    font-size: 25px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255, 215, 0, 0.98);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.28);
+    padding-bottom: 6px;
 }
 
 .bloque-creditos h3 {
-    margin: 28px 0 10px 0;
-    font-size: 24px;
-    color: rgba(255, 215, 0, 0.97);
+    margin: 22px 0 8px 0;
+    font-size: 21px;
+    color: rgba(255, 222, 65, 0.96);
 }
 
 .bloque-creditos p {
-    margin: 0 0 20px 0;
-    font-size: 22px;
+    margin: 0 0 16px 0;
+    font-size: 19px;
+    line-height: 1.52;
+    color: rgba(255, 232, 95, 0.88);
+}
+
+.bloque-creditos ul, .bloque-creditos ol {
+    margin: 0 0 18px 0;
+    padding-left: 22px;
+    font-size: 18px;
     line-height: 1.55;
-    color: rgba(255, 230, 85, 0.85);
+    color: rgba(255, 232, 95, 0.88);
+}
+
+.bloque-creditos li {
+    margin-bottom: 7px;
+}
+
+.bloque-creditos li strong {
+    color: rgba(255, 215, 0, 0.98);
 }
 
 .bloque-creditos .credito-cierre {
-    margin-top: 26px;
-    font-size: 24px;
+    margin-top: 28px;
+    font-size: 21px;
     font-weight: bold;
-    color: rgba(255, 215, 0, 0.97);
+    color: rgba(255, 215, 0, 0.98);
 }
 
 @keyframes rodarCreditos {
@@ -254,7 +280,7 @@ body {
 }
 
 /* =================================
-   TARJETA PRINCIPAL DE EMPRESA
+   TARJETA PRINCIPAL DE EMPRESA (PASO 3)
 ================================= */
 
 .tarjeta-empresa {
@@ -293,7 +319,7 @@ body {
 
 h1 {
     color: #ffad4b;
-    font-size: 26px;
+    font-size: 25px;
     letter-spacing: 0.8px;
     margin: 0;
 }
@@ -408,9 +434,10 @@ h1 {
         width: 470px;
         max-width: calc(100vw - 825px);
     }
-    .bloque-creditos .credito-titulo { font-size: 30px; }
-    .bloque-creditos h3, .bloque-creditos .credito-cierre { font-size: 20px; }
-    .bloque-creditos p { font-size: 19px; }
+    .bloque-creditos .credito-titulo { font-size: 28px; }
+    .bloque-creditos h2 { font-size: 21px; }
+    .bloque-creditos h3 { font-size: 18px; }
+    .bloque-creditos p, .bloque-creditos ul, .bloque-creditos ol { font-size: 17px; }
 }
 
 @media (max-width: 850px) {
@@ -433,7 +460,7 @@ h1 {
         position: static;
         width: calc(100% - 30px);
         max-width: none;
-        height: 260px;
+        height: 360px;
         margin: 0 auto 30px;
     }
 }
@@ -449,19 +476,66 @@ h1 {
 <!-- CREDITOS / INFORMACION DE LA EMPRESA -->
 <div class="capa-creditos" id="capaCreditos" title="Haz clic para pausar o reanudar la lectura">
     <div class="bloque-creditos" id="bloqueCreditos">
-        <div class="credito-titulo">[NOMBRE DE TU EMPRESA]</div>
-        <div class="credito-subtitulo">[TU ESLOGAN O RUBRO]</div>
+        <div class="credito-titulo">GNG GESTIÓN NORTE SpA</div>
+        <div class="credito-subtitulo">UN SERVICIO, MÚLTIPLES SOLUCIONES</div>
 
-        <h3>Quiénes somos</h3>
-        <p>[Escribe aquí una breve presentación de tu empresa, tu experiencia y lo que hacen cada día.]</p>
+        <h2>Gestión de Transporte y Logística</h2>
+        <p>Nacemos con el propósito de entregar soluciones de coordinación y gestión de transporte de pasajeros y logística, conectando empresas, hoteles, agencias de turismo y proveedores especializados.</p>
+        <p>Desde Iquique, Región de Tarapacá, simplificamos la contratación y coordinación de cada requerimiento con organización, comunicación transparente y relaciones comerciales con proveedores externos.</p>
+        <p><strong>Nuestro compromiso es coordinar soluciones confiables, entregando una atención profesional y orientada a las necesidades de nuestros clientes.</strong></p>
 
-        <h3>Nuestra misión</h3>
-        <p>[Explica qué soluciona tu empresa y qué valor entregas a tus clientes.]</p>
+        <h2>Soluciones que Ofrecemos</h2>
 
-        <h3>Compromiso y calidad</h3>
-        <p>[Cuéntales sobre tu forma de trabajar, cumplimiento y atención personalizada.]</p>
+        <h3>Traslados aeroportuarios</h3>
+        <p>Coordinación desde y hacia el aeropuerto mediante reservas anticipadas y proveedores externos.</p>
+        <ul>
+            <li>Traslados de llegada y salida.</li>
+            <li>Coordinación de horarios de vuelos.</li>
+            <li>Transporte para huéspedes y ejecutivos.</li>
+            <li>Reservas individuales y grupales.</li>
+        </ul>
 
-        <div class="credito-cierre">[NOMBRE DE TU EMPRESA] — [CIUDAD / CHILE]</div>
+        <h3>Gestión de transporte de pasajeros</h3>
+        <p>Movilidad privada y programada conectando clientes con proveedores externos.</p>
+        <ul>
+            <li>Traslados corporativos.</li>
+            <li>Movilidad para trabajadores y ejecutivos.</li>
+            <li>Transporte para visitantes.</li>
+            <li>Servicios previamente programados.</li>
+        </ul>
+
+        <h3>Coordinación logística</h3>
+        <p>Requerimientos logísticos de pequeña escala mediante proveedores externos según cada encargo.</p>
+        <ul>
+            <li>Entrega de documentos.</li>
+            <li>Transporte de paquetes.</li>
+            <li>Coordinación de entregas.</li>
+            <li>Gestión de encargos empresariales.</li>
+        </ul>
+
+        <h3>Soluciones para hoteles y turismo</h3>
+        <p>Gestión centralizada de solicitudes de transporte para establecimientos turísticos y agencias.</p>
+        <ul>
+            <li>Reservas para huéspedes.</li>
+            <li>Coordinación de pasajeros.</li>
+            <li>Servicios programados.</li>
+            <li>Gestión de requerimientos turísticos.</li>
+        </ul>
+
+        <h2>Nuestro Modelo de Coordinación</h2>
+        <p>Gestión organizada, comunicación transparente y soluciones conectadas. Actuamos como punto de contacto centralizado entre clientes y proveedores externos especializados, sin depender de flota propia para mantener una estructura flexible.</p>
+
+        <h3>¿Cómo trabajamos?</h3>
+        <ol>
+            <li><strong>Recepción:</strong> escuchamos y registramos las necesidades de nuestros clientes.</li>
+            <li><strong>Planificación:</strong> evaluamos requerimientos, fechas, horarios y condiciones del servicio.</li>
+            <li><strong>Coordinación:</strong> consultamos disponibilidad y alternativas con proveedores externos.</li>
+            <li><strong>Confirmación:</strong> presentamos las condiciones comerciales y formalizamos la reserva una vez aceptada.</li>
+            <li><strong>Ejecución:</strong> coordinamos la prestación del servicio con el proveedor correspondiente para su retiro.</li>
+            <li><strong>Seguimiento:</strong> mantenemos comunicación con el cliente y gestionamos el cierre del requerimiento.</li>
+        </ol>
+
+        <div class="credito-cierre">Coordinamos necesidades. Gestionamos soluciones. Conectamos servicios.<br>GNG GESTIÓN NORTE SpA — Iquique, Chile</div>
     </div>
 </div>
 
@@ -474,9 +548,9 @@ h1 {
 
 <main class="tarjeta-empresa">
     <section class="identidad">
-        <div class="marca">EMPRESA · SERVICIOS</div>
-        <h1>[NOMBRE DE TU EMPRESA]</h1>
-        <div class="subtitulo">[ESLOGAN O ÁREA DE NEGOCIO]</div>
+        <div class="marca">GESTIÓN · TRANSPORTE Y LOGÍSTICA</div>
+        <h1>GNG GESTIÓN NORTE SpA</h1>
+        <div class="subtitulo">UN SERVICIO, MÚLTIPLES SOLUCIONES</div>
         <div class="etiqueta-estado">
             <span class="punto"></span>
             ATENCIÓN ACTIVA
@@ -484,23 +558,22 @@ h1 {
     </section>
 
     <section class="servicios">
-        <div class="servicios-titulo">SERVICIOS PRINCIPALES</div>
+        <div class="servicios-titulo">MÓDULO DE RESERVAS</div>
         <ul>
-            <li>[Servicio o producto 1]</li>
-            <li>[Servicio o producto 2]</li>
-            <li>[Servicio o producto 3]</li>
+            <li>Traslados aeroportuarios</li>
+            <li>Transporte de pasajeros</li>
+            <li>Logística y turismo</li>
         </ul>
     </section>
 
     <section class="contacto-box">
-        <a class="btn-contacto" href="https://wa.me/56900000000" target="_blank" rel="noopener">
-            CONTACTAR POR WHATSAPP
+        <a class="btn-contacto" href="#reservar">
+            RESERVAR SERVICIO
         </a>
-        <div class="dato-extra">[correo@tuempresa.cl]</div>
-        <div class="dato-extra">[Ciudad, Región · Chile]</div>
+        <div class="dato-extra">Iquique, Región de Tarapacá · Chile</div>
     </section>
 
-    <div class="pie">SITIO OFICIAL · <strong>[NOMBRE DE TU EMPRESA]</strong></div>
+    <div class="pie">SITIO OFICIAL · <strong>GNG GESTIÓN NORTE SpA</strong></div>
 </main>
 
 <script>
@@ -567,7 +640,7 @@ function dibujarFecha() {
 dibujarFecha();
 setInterval(dibujarFecha, 60000);
 
-// Rotación de fotos de fondo
+// Rotación de fotos de fondo cada 20 segundos
 const imagenes = [
     "foto 1.png",
     "foto 2.jpg"
@@ -588,7 +661,7 @@ function cambiarFotografia() {
     anterior.style.opacity = "0";
     fondoActivo = fondoActivo === 1 ? 2 : 1;
 }
-setInterval(cambiarFotografia, 15000);
+setInterval(cambiarFotografia, 20000);
 </script>
 
 </body>
