@@ -1,401 +1,1044 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>
+(function() {
+    if (window.location.search.indexOf("desktop=1") !== -1) return;
+    var esDispositivoMovil = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (esDispositivoMovil && !window.location.pathname.endsWith("movil.html")) {
+        window.location.replace("movil.html");
+    }
+})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#08090d">
-<title>GNG GESTIÓN NORTE SpA - Reservas</title>
+<title>GNG GESTIÓN NORTE SpA - Un Servicio, Múltiples Soluciones</title>
+
 <style>
-*, *::before, *::after { box-sizing: border-box; }
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
+    min-height: 100vh;
     min-height: 100dvh;
     background: #08090d;
-    color: #f3f4f6;
     font-family: Arial, Helvetica, sans-serif;
-    padding: 16px 14px 36px;
+    overflow: hidden;
+    color: white;
 }
-.contenedor {
-    max-width: 480px;
-    margin: 0 auto;
+
+/* =================================
+   FOTOGRAFIAS
+================================= */
+
+.fondo {
+    position: fixed;
+    inset: 0;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    transition: opacity 2s ease-in-out;
+    z-index: 0;
+}
+
+#fondo1 { opacity: 1; }
+#fondo2 { opacity: 0; }
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.52);
+    z-index: 1;
+    cursor: pointer;
+}
+
+/* =================================
+   CREDITOS AMARILLOS A LA IZQUIERDA
+================================= */
+
+.capa-creditos {
+    position: fixed;
+    top: 130px;
+    left: 34px;
+    bottom: 24px;
+    width: 600px;
+    max-width: calc(100vw - 825px);
+    background: transparent;
+    pointer-events: none;
+    z-index: 4;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 8%,
+        black 92%,
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 8%,
+        black 92%,
+        transparent 100%
+    );
+}
+
+.bloque-creditos {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    text-align: left;
+    color: rgba(255, 221, 51, 0.88);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
+    animation: rodarCreditos 135s linear infinite;
+    pointer-events: auto;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.25s ease;
+}
+
+.capa-creditos.pausado .bloque-creditos {
+    animation-play-state: paused;
+    color: rgba(255, 235, 105, 0.98);
+}
+
+.indicador-pausa {
+    position: fixed;
+    bottom: 18px;
+    left: 34px;
+    z-index: 6;
+    padding: 6px 12px;
+    border-radius: 14px;
+    background: rgba(15, 17, 23, 0.85);
+    border: 1px solid rgba(255, 215, 0, 0.45);
+    color: #ffd700;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.indicador-pausa.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.bloque-creditos .credito-titulo {
+    margin: 0 0 6px 0;
+    font-size: 36px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    color: rgba(255, 215, 0, 0.97);
+}
+
+.bloque-creditos .credito-subtitulo {
+    margin: 0 0 26px 0;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: rgba(255, 228, 92, 0.92);
+}
+
+.bloque-creditos h2 {
+    margin: 34px 0 12px 0;
+    font-size: 25px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255, 215, 0, 0.98);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.28);
+    padding-bottom: 6px;
+}
+
+.bloque-creditos h3 {
+    margin: 22px 0 8px 0;
+    font-size: 21px;
+    color: rgba(255, 222, 65, 0.96);
+}
+
+.bloque-creditos p {
+    margin: 0 0 16px 0;
+    font-size: 19px;
+    line-height: 1.52;
+    color: rgba(255, 232, 95, 0.88);
+}
+
+.bloque-creditos ul, .bloque-creditos ol {
+    margin: 0 0 18px 0;
+    padding-left: 22px;
+    font-size: 18px;
+    line-height: 1.55;
+    color: rgba(255, 232, 95, 0.88);
+}
+
+.bloque-creditos li {
+    margin-bottom: 7px;
+}
+
+.bloque-creditos li strong {
+    color: rgba(255, 215, 0, 0.98);
+}
+
+.bloque-creditos .credito-cierre {
+    margin-top: 28px;
+    font-size: 21px;
+    font-weight: bold;
+    color: rgba(255, 215, 0, 0.98);
+}
+
+@keyframes rodarCreditos {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(calc(-100% - 100vh)); }
+}
+
+/* =================================
+   RELOJ DIGITAL SIETE SEGMENTOS
+================================= */
+
+.reloj {
+    position: fixed;
+    top: 28px;
+    left: 32px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.digito {
+    position: relative;
+    width: 37px;
+    height: 65px;
+}
+
+.seg {
+    position: absolute;
+    background: #382719;
+    opacity: .55;
+}
+
+.seg.encendido {
+    background: #ff9b35;
+    opacity: 1;
+    filter:
+        drop-shadow(0 0 4px #ff791b)
+        drop-shadow(0 0 9px rgba(255,140,35,.65));
+}
+
+.seg.a, .seg.g, .seg.d {
+    width: 25px;
+    height: 6px;
+    left: 6px;
+    clip-path: polygon(12% 0,88% 0,100% 50%,88% 100%,12% 100%,0 50%);
+}
+
+.seg.a { top: 0; }
+.seg.g { top: 29px; }
+.seg.d { bottom: 0; }
+
+.seg.b, .seg.c, .seg.e, .seg.f {
+    width: 6px;
+    height: 25px;
+    clip-path: polygon(50% 0,100% 12%,100% 88%,50% 100%,0 88%,0 12%);
+}
+
+.seg.f { top: 4px; left: 1px; }
+.seg.b { top: 4px; right: 1px; }
+.seg.e { bottom: 4px; left: 1px; }
+.seg.c { bottom: 4px; right: 1px; }
+
+.dos-puntos {
+    height: 65px;
+    width: 12px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    animation: parpadeo 1s steps(1) infinite;
 }
-.tarjeta-principal {
-    background: linear-gradient(145deg, rgba(28,30,37,0.97), rgba(10,12,17,0.98));
-    border: 1px solid rgba(255,169,69,0.42);
-    border-radius: 20px;
-    padding: 18px;
-    box-shadow: 0 16px 40px rgba(0,0,0,0.75);
+
+.dos-puntos span {
+    width: 6px;
+    height: 6px;
+    background: #ff9b35;
+    border-radius: 1px;
+    box-shadow: 0 0 8px #ff791b;
 }
-.barra-superior {
+
+@keyframes parpadeo {
+    50% { opacity: .15; }
+}
+
+.etiqueta-reloj {
+    position: fixed;
+    top: 101px;
+    left: 34px;
+    z-index: 5;
+    color: #ffad4b;
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 1.2px;
+    white-space: nowrap;
+}
+
+/* =================================
+   TARJETA PRINCIPAL DE EMPRESA
+================================= */
+
+.tarjeta-empresa {
+    position: fixed;
+    z-index: 3;
+    right: 35px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 760px;
+    min-height: 230px;
+    padding: 28px 32px;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: 24px;
+
+    background: linear-gradient(120deg, rgba(28,30,37,.97), rgba(9,10,15,.97));
+    border: 1px solid rgba(255,169,69,.38);
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.8), 0 0 30px rgba(255,115,20,.10);
+}
+
+.identidad {
+    flex: 1.1;
+    min-width: 190px;
+}
+
+.marca {
+    color: #aaaeb7;
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: bold;
     margin-bottom: 12px;
 }
-.badge-estado {
+
+h1 {
+    color: #ffad4b;
+    font-size: 25px;
+    letter-spacing: 0.8px;
+    margin: 0;
+}
+
+.subtitulo {
+    margin-top: 9px;
+    font-size: 10px;
+    color: #b7b8c0;
+    letter-spacing: 1.4px;
+}
+
+.etiqueta-estado {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 5px 10px;
-    border-radius: 999px;
-    background: rgba(34,197,94,0.14);
-    border: 1px solid rgba(34,197,94,0.4);
-    color: #86efac;
+    gap: 7px;
+    margin-top: 18px;
+    padding: 7px 12px;
+    border-radius: 20px;
+    color: #ffad4b;
     font-size: 10px;
+    letter-spacing: 1px;
     font-weight: bold;
-    letter-spacing: 0.8px;
+    background: rgba(255,100,30,.12);
+    border: 1px solid rgba(255,130,40,.35);
 }
-.punto-verde {
+
+.punto {
     width: 7px;
     height: 7px;
+    background: #ff642c;
     border-radius: 50%;
-    background: #22c55e;
+    box-shadow: 0 0 9px #ff642c;
+    animation: pulso 1.5s infinite;
 }
-.hora-movil {
+
+@keyframes pulso {
+    50% { opacity: .3; }
+}
+
+.servicios {
+    flex: 1;
+    text-align: left;
+    border-left: 1px solid rgba(255,169,69,.18);
+    padding-left: 22px;
+}
+
+.servicios-titulo {
     color: #ffad4b;
-    font-size: 13px;
-    font-weight: bold;
-}
-h1 {
-    margin: 0 0 6px;
-    font-size: 24px;
-    color: #ffffff;
-    letter-spacing: 0.4px;
-}
-.subtitulo {
-    margin: 0 0 16px;
     font-size: 11px;
-    color: #ffad4b;
     font-weight: bold;
-    letter-spacing: 1.2px;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
 }
-.btn-reservar-top {
-    width: 100%;
-    padding: 14px 16px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #f89b29, #ea580c);
-    color: #ffffff;
+
+.servicios ul {
+    margin: 0;
+    padding-left: 18px;
+    color: #d5d7de;
     font-size: 13px;
-    font-weight: bold;
-    letter-spacing: 0.8px;
-    cursor: pointer;
-    box-shadow: 0 8px 20px rgba(234,88,12,0.35);
+    line-height: 1.65;
 }
-.grilla-servicios {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+
+.contacto-box {
+    flex: 0.9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 10px;
-    margin-top: 14px;
 }
-.btn-servicio {
-    padding: 13px 10px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,169,69,0.28);
-    background: rgba(255,255,255,0.04);
-    color: #f3f4f6;
-    font-size: 13px;
-    font-weight: bold;
-    cursor: pointer;
+
+.btn-contacto {
+    display: inline-block;
+    text-decoration: none;
     text-align: center;
-    transition: border-color 0.2s, background 0.2s;
+    padding: 13px 20px;
+    border-radius: 30px;
+    background: linear-gradient(145deg, #ffc16b, #f47725, #d94b16);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 25px rgba(255,100,20,.35);
+    transition: transform .2s;
+    cursor: pointer;
+    border: none;
 }
-.btn-servicio.activo, .btn-servicio:hover {
-    border-color: #ffad4b;
-    background: rgba(255,169,69,0.14);
-    color: #ffcf8b;
+
+.btn-contacto:hover {
+    transform: scale(1.05);
 }
-.tarjeta-form {
-    background: linear-gradient(145deg, rgba(24,26,33,0.97), rgba(10,12,17,0.98));
-    border: 1px solid rgba(255,169,69,0.35);
-    border-radius: 20px;
-    padding: 18px;
+
+.dato-extra {
+    color: #b7b8c0;
+    font-size: 10px;
+    text-align: center;
+    letter-spacing: 0.8px;
 }
-.tarjeta-form h2 {
-    margin: 0 0 14px;
-    font-size: 18px;
+
+.pie {
+    position: absolute;
+    right: 29px;
+    bottom: 9px;
+    color: #85868c;
+    font-size: 8px;
+    letter-spacing: 1px;
+}
+
+.pie strong {
     color: #ffad4b;
 }
-.campo {
+
+/* =================================
+   MODAL DE RESERVAS GNG
+================================= */
+
+.gng-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(5, 7, 13, 0.84);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.gng-modal-overlay.abierto {
+    display: flex;
+}
+
+.gng-modal-card {
+    position: relative;
+    width: 100%;
+    max-width: 650px;
+    max-height: 92vh;
+    overflow-y: auto;
+    background: linear-gradient(180deg, #16181f 0%, #0d0f14 100%);
+    border: 1px solid rgba(255, 169, 69, 0.42);
+    border-radius: 20px;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.85);
+    color: #f3f4f6;
+    font-family: inherit;
+    animation: gngModalEntrar 0.25s ease-out;
+}
+
+@keyframes gngModalEntrar {
+    from { opacity: 0; transform: translateY(14px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.gng-modal-header {
+    position: relative;
+    height: 215px;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 169, 69, 0.28);
+}
+
+.gng-modal-header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 45%;
+    display: block;
+}
+
+.gng-modal-header-grad {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(10, 12, 16, 0.20) 0%,
+        rgba(13, 15, 20, 0.72) 60%,
+        rgba(13, 15, 20, 0.98) 100%
+    );
+}
+
+.gng-modal-cerrar {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(13, 15, 20, 0.78);
+    color: #ffffff;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.gng-modal-cerrar:hover {
+    background: #f5821f;
+    border-color: #f5821f;
+}
+
+.gng-modal-titulo-box {
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    bottom: 16px;
+    z-index: 2;
+}
+
+.gng-modal-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(245, 130, 31, 0.20);
+    border: 1px solid rgba(245, 130, 31, 0.55);
+    color: #ffb15e;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.gng-modal-titulo-box h2 {
+    margin: 0 0 4px 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.gng-modal-titulo-box p {
+    margin: 0;
+    font-size: 13px;
+    color: #cbd5e1;
+}
+
+.gng-form {
+    padding: 20px 24px 24px;
+}
+
+.gng-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.gng-campo {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    margin-bottom: 12px;
 }
-.campo label {
+
+.gng-campo-full {
+    grid-column: 1 / -1;
+}
+
+.gng-campo label {
     font-size: 12px;
-    font-weight: bold;
+    font-weight: 600;
     color: #e2e8f0;
+    letter-spacing: 0.02em;
 }
-.campo input, .campo select, .campo textarea {
+
+.gng-campo input,
+.gng-campo select,
+.gng-campo textarea {
     width: 100%;
-    padding: 11px 12px;
+    padding: 11px 13px;
     border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.16);
-    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.05);
     color: #ffffff;
     font-size: 14px;
     font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
 }
-.campo select option {
+
+.gng-campo select option {
     background: #16181f;
     color: #ffffff;
 }
-.fila-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+
+.gng-campo input:focus,
+.gng-campo select:focus,
+.gng-campo textarea:focus {
+    border-color: #f5821f;
+    background: rgba(255, 255, 255, 0.08);
 }
-.acciones {
+
+/* Solo Fecha requerida y Hora estimada segmentadas con salto automático */
+.gng-grupo-segmentado {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 14px;
-}
-.btn-wsp {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 999px;
-    background: linear-gradient(135deg, #25d366, #16a34a);
-    color: #ffffff;
-    font-size: 13px;
-    font-weight: bold;
-    cursor: pointer;
-}
-.btn-mail {
-    width: 100%;
-    padding: 13px;
-    border: none;
-    border-radius: 999px;
-    background: linear-gradient(135deg, #f89b29, #f5821f);
-    color: #ffffff;
-    font-size: 13px;
-    font-weight: bold;
-    cursor: pointer;
-}
-.estado {
-    display: none;
-    margin-top: 10px;
-    padding: 10px 12px;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
     border-radius: 10px;
-    font-size: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.05);
+    transition: border-color 0.2s, background 0.2s;
 }
-.estado.visible { display: block; }
-.estado.ok {
-    background: rgba(34,197,94,0.15);
-    border: 1px solid rgba(34,197,94,0.45);
+
+.gng-grupo-segmentado:focus-within {
+    border-color: #f5821f;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.gng-grupo-segmentado input {
+    border: none !important;
+    background: transparent !important;
+    padding: 6px 2px !important;
+    text-align: center;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.gng-grupo-segmentado input.seg-2 {
+    width: 34px;
+}
+
+.gng-grupo-segmentado input.seg-4 {
+    width: 54px;
+}
+
+.gng-grupo-segmentado span.sep {
+    color: #ffad4b;
+    font-weight: bold;
+    user-select: none;
+}
+
+.gng-grupo-segmentado select.sel-ampm {
+    margin-left: auto;
+    width: 74px;
+    padding: 6px 8px !important;
+    border-radius: 7px !important;
+    border: 1px solid rgba(255, 169, 69, 0.45) !important;
+    background: rgba(245, 130, 31, 0.18) !important;
+    color: #ffcf8b !important;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.gng-nota {
+    margin-top: 14px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(245, 130, 31, 0.10);
+    border-left: 3px solid #f5821f;
+    font-size: 12.5px;
+    color: #e2e8f0;
+    line-height: 1.45;
+}
+
+.gng-estado-envio {
+    display: none;
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    line-height: 1.45;
+}
+
+.gng-estado-envio.visible {
+    display: block;
+}
+
+.gng-estado-envio.ok {
+    background: rgba(34, 197, 94, 0.14);
+    border: 1px solid rgba(34, 197, 94, 0.45);
     color: #bbf7d0;
 }
-.estado.error {
-    background: rgba(239,68,68,0.15);
-    border: 1px solid rgba(239,68,68,0.45);
+
+.gng-estado-envio.error {
+    background: rgba(239, 68, 68, 0.14);
+    border: 1px solid rgba(239, 68, 68, 0.45);
     color: #fecaca;
 }
-.pie-movil {
-    text-align: center;
-    font-size: 11px;
-    color: #9ca3af;
+
+.gng-acciones {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 12px;
 }
-.pie-movil a {
-    color: #ffad4b;
-    text-decoration: none;
+
+.gng-btn {
+    padding: 13px 16px;
+    border-radius: 999px;
+    border: none;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: transform 0.15s, filter 0.2s, opacity 0.2s;
+}
+
+.gng-btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.gng-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.06);
+}
+
+.gng-btn-wsp {
+    background: linear-gradient(135deg, #25d366 0%, #16a34a 100%);
+    color: #ffffff;
+    box-shadow: 0 8px 22px rgba(37, 211, 102, 0.28);
+}
+
+.gng-btn-mail {
+    background: linear-gradient(135deg, #f89b29 0%, #f5821f 100%);
+    color: #ffffff;
+    box-shadow: 0 8px 22px rgba(245, 130, 31, 0.28);
+}
+
+@media (max-width: 1440px) {
+    .capa-creditos {
+        width: 470px;
+        max-width: calc(100vw - 825px);
+    }
+    .bloque-creditos .credito-titulo { font-size: 28px; }
+    .bloque-creditos h2 { font-size: 21px; }
+    .bloque-creditos h3 { font-size: 18px; }
+    .bloque-creditos p, .bloque-creditos ul, .bloque-creditos ol { font-size: 17px; }
+}
+
+@media (max-width: 850px) {
+    body { overflow: auto; }
+    .tarjeta-empresa {
+        position: static;
+        transform: none;
+        width: calc(100% - 30px);
+        margin: 135px auto 24px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .servicios {
+        border-left: none;
+        border-top: 1px solid rgba(255,169,69,.18);
+        padding-left: 0;
+        padding-top: 16px;
+    }
+    .capa-creditos {
+        position: static;
+        width: calc(100% - 30px);
+        max-width: none;
+        height: 360px;
+        margin: 0 auto 30px;
+    }
+}
+
+@media (max-width: 600px) {
+    .gng-grid { grid-template-columns: 1fr; }
+    .gng-acciones { grid-template-columns: 1fr; }
+    .gng-modal-header { height: 175px; }
 }
 </style>
 </head>
-<body>
-<div class="contenedor">
-    <section class="tarjeta-principal">
-        <div class="barra-superior">
-            <span class="badge-estado"><span class="punto-verde"></span> ATENCIÓN ACTIVA · IQUIQUE</span>
-            <span class="hora-movil" id="horaChile">--:--</span>
-        </div>
-        <h1>GNG GESTIÓN NORTE SpA</h1>
-        <p class="subtitulo">UN SERVICIO, MÚLTIPLES SOLUCIONES</p>
-        <button type="button" class="btn-reservar-top" id="irFormulario">COMPLETAR SOLICITUD DE RESERVA &rsaquo;</button>
 
-        <div class="grilla-servicios">
-            <button type="button" class="btn-servicio" data-servicio="Traslado Aeroportuario (Diego Aracena)">Aeropuerto</button>
-            <button type="button" class="btn-servicio" data-servicio="Transporte Privado / Corporativo de Pasajeros">Pasajeros</button>
-            <button type="button" class="btn-servicio" data-servicio="Coordinación Logística / Encomiendas">Logística</button>
-            <button type="button" class="btn-servicio" data-servicio="Convenio Hoteles / Turismo">Hoteles y Turismo</button>
+<body>
+
+<div id="fondo1" class="fondo"></div>
+<div id="fondo2" class="fondo"></div>
+<div class="overlay" id="overlayFondo"></div>
+
+<!-- CREDITOS / INFORMACION DE LA EMPRESA -->
+<div class="capa-creditos" id="capaCreditos" title="Haz clic para pausar o reanudar la lectura">
+    <div class="bloque-creditos" id="bloqueCreditos">
+        <div class="credito-titulo">GNG GESTIÓN NORTE SpA</div>
+        <div class="credito-subtitulo">UN SERVICIO, MÚLTIPLES SOLUCIONES</div>
+
+        <h2>Gestión de Transporte y Logística</h2>
+        <p>Nacemos con el propósito de entregar soluciones de coordinación y gestión de transporte de pasajeros y logística, conectando empresas, hoteles, agencias de turismo y proveedores especializados.</p>
+        <p>Desde Iquique, Región de Tarapacá, simplificamos la contratación y coordinación de cada requerimiento con organización, comunicación transparente y relaciones comerciales con proveedores externos.</p>
+        <p><strong>Nuestro compromiso es coordinar soluciones confiables, entregando una atención profesional y orientada a las necesidades de nuestros clientes.</strong></p>
+
+        <h2>Soluciones que Ofrecemos</h2>
+
+        <h3>Traslados aeroportuarios</h3>
+        <p>Coordinación desde y hacia el aeropuerto mediante reservas anticipadas y proveedores externos.</p>
+        <ul>
+            <li>Traslados de llegada y salida.</li>
+            <li>Coordinación de horarios de vuelos.</li>
+            <li>Transporte para huéspedes y ejecutivos.</li>
+            <li>Reservas individuales y grupales.</li>
+        </ul>
+
+        <h3>Gestión de transporte de pasajeros</h3>
+        <p>Movilidad privada y programada conectando clientes con proveedores externos.</p>
+        <ul>
+            <li>Traslados corporativos.</li>
+            <li>Movilidad para trabajadores y ejecutivos.</li>
+            <li>Transporte para visitantes.</li>
+            <li>Servicios previamente programados.</li>
+        </ul>
+
+        <h3>Coordinación logística</h3>
+        <p>Requerimientos logísticos de pequeña escala mediante proveedores externos según cada encargo.</p>
+        <ul>
+            <li>Entrega de documentos.</li>
+            <li>Transporte de paquetes.</li>
+            <li>Coordinación de entregas.</li>
+            <li>Gestión de encargos empresariales.</li>
+        </ul>
+
+        <h3>Soluciones para hoteles y turismo</h3>
+        <p>Gestión centralizada de solicitudes de transporte para establecimientos turísticos y agencias.</p>
+        <ul>
+            <li>Reservas para huéspedes.</li>
+            <li>Coordinación de pasajeros.</li>
+            <li>Servicios programados.</li>
+            <li>Gestión de requerimientos turísticos.</li>
+        </ul>
+
+        <h2>Nuestro Modelo de Coordinación</h2>
+        <p>Gestión organizada, comunicación transparente y soluciones conectadas. Actuamos como punto de contacto centralizado entre clientes y proveedores externos especializados, sin depender de flota propia para mantener una estructura flexible.</p>
+
+        <h3>¿Cómo trabajamos?</h3>
+        <ol>
+            <li><strong>Recepción:</strong> escuchamos y registramos las necesidades de nuestros clientes.</li>
+            <li><strong>Planificación:</strong> evaluamos requerimientos, fechas, horarios y condiciones del servicio.</li>
+            <li><strong>Coordinación:</strong> consultamos disponibilidad y alternativas con proveedores externos.</li>
+            <li><strong>Confirmación:</strong> presentamos las condiciones comerciales y formalizamos la reserva una vez aceptada.</li>
+            <li><strong>Ejecución:</strong> coordinamos la prestación del servicio con el proveedor correspondiente para su retiro.</li>
+            <li><strong>Seguimiento:</strong> mantenemos comunicación con el cliente y gestionamos el cierre del requerimiento.</li>
+        </ol>
+
+        <div class="credito-cierre">Coordinamos necesidades. Gestionamos soluciones. Conectamos servicios.<br>GNG GESTIÓN NORTE SpA — Iquique, Chile</div>
+    </div>
+</div>
+
+<div class="indicador-pausa" id="indicadorPausa">
+    ⏸ LECTURA PAUSADA (CLIC PARA SEGUIR)
+</div>
+
+<div class="reloj" id="reloj" aria-label="Hora de Chile"></div>
+<div class="etiqueta-reloj" id="fecha">CARGANDO FECHA...</div>
+
+<main class="tarjeta-empresa">
+    <section class="identidad">
+        <div class="marca">GESTIÓN · TRANSPORTE Y LOGÍSTICA</div>
+        <h1>GNG GESTIÓN NORTE SpA</h1>
+        <div class="subtitulo">UN SERVICIO, MÚLTIPLES SOLUCIONES</div>
+        <div class="etiqueta-estado">
+            <span class="punto"></span>
+            ATENCIÓN ACTIVA
         </div>
     </section>
 
-    <section class="tarjeta-form" id="seccionSolicitud">
-        <h2>Tu solicitud</h2>
-        <form id="formMovil">
-            <div class="campo">
-                <label for="mNombre">Nombre o Empresa *</label>
-                <input type="text" id="mNombre" placeholder="Nombre completo o empresa" required>
+    <section class="servicios">
+        <div class="servicios-titulo">MÓDULO DE RESERVAS</div>
+        <ul>
+            <li>Traslados aeroportuarios</li>
+            <li>Transporte de pasajeros</li>
+            <li>Logística y turismo</li>
+        </ul>
+    </section>
+
+    <section class="contacto-box">
+        <button type="button" class="btn-contacto" id="abrirReservasGNG">
+            RESERVAR SERVICIO
+        </button>
+        <div class="dato-extra">Iquique, Región de Tarapacá · Chile</div>
+    </section>
+
+    <div class="pie">SITIO OFICIAL · <strong>GNG GESTIÓN NORTE SpA</strong></div>
+</main>
+
+<!-- MODAL DE RESERVAS GNG -->
+<div id="gngModalReservas" class="gng-modal-overlay" aria-hidden="true">
+    <div class="gng-modal-card" role="dialog" aria-modal="true" aria-labelledby="gngModalTitulo">
+
+        <div class="gng-modal-header">
+            <img src="foto 3.jpg" alt="Bahía de Iquique - GNG Gestión Norte SpA">
+            <div class="gng-modal-header-grad"></div>
+            <button type="button" id="cerrarReservasGNG" class="gng-modal-cerrar" aria-label="Cerrar ventana">&times;</button>
+            <div class="gng-modal-titulo-box">
+                <span class="gng-modal-badge">Iquique · Región de Tarapacá</span>
+                <h2 id="gngModalTitulo">Solicitud de Servicio y Reservas</h2>
+                <p>Coordinación personalizada con confirmación directa de disponibilidad y tarifa.</p>
             </div>
-            <div class="campo">
-                <label for="mTelefono">Teléfono / WhatsApp *</label>
-                <input type="tel" id="mTelefono" placeholder="+56 9..." required>
-            </div>
-            <div class="campo">
-                <label for="mCorreo">Correo electrónico *</label>
-                <input type="email" id="mCorreo" placeholder="cliente@empresa.cl" required>
-            </div>
-            <div class="campo">
-                <label for="mServicio">Tipo de servicio *</label>
-                <select id="mServicio" required>
-                    <option value="" disabled selected>Seleccione una opción...</option>
-                    <option value="Traslado Aeroportuario (Diego Aracena)">Traslado Aeroportuario (Diego Aracena)</option>
-                    <option value="Transporte Privado / Corporativo de Pasajeros">Transporte Privado / Corporativo</option>
-                    <option value="Coordinación Logística / Encomiendas">Coordinación Logística / Encomiendas</option>
-                    <option value="Convenio Hoteles / Turismo">Convenio Hoteles / Turismo</option>
-                </select>
-            </div>
-            <div class="fila-2">
-                <div class="campo">
-                    <label for="mFecha">Fecha *</label>
-                    <input type="text" id="mFecha" placeholder="DD/MM/AAAA" required>
+        </div>
+
+        <form id="gngFormReserva" class="gng-form">
+            <div class="gng-grid">
+                <div class="gng-campo">
+                    <label for="gngNombre">Nombre o Empresa *</label>
+                    <input type="text" id="gngNombre" name="nombre" placeholder="Ej: Juan Pérez / Hotel Cavancha" required>
                 </div>
-                <div class="campo">
-                    <label for="mHora">Hora *</label>
-                    <input type="text" id="mHora" placeholder="HH:MM" required>
+
+                <div class="gng-campo">
+                    <label for="gngTelefono">Teléfono / WhatsApp *</label>
+                    <input type="tel" id="gngTelefono" name="telefono" placeholder="Ej: +56 9 1234 5678" required>
                 </div>
-            </div>
-            <div class="campo">
-                <label for="mOrigen">Origen *</label>
-                <input type="text" id="mOrigen" placeholder="Ej: Aeropuerto Iquique" required>
-            </div>
-            <div class="campo">
-                <label for="mDestino">Destino *</label>
-                <input type="text" id="mDestino" placeholder="Ej: Hotel Cavancha / Centro" required>
-            </div>
-            <div class="campo">
-                <label for="mDetalle">Pasajeros, vuelo o detalles</label>
-                <textarea id="mDetalle" rows="2" placeholder="Ej: 2 pasajeros, vuelo LA124..."></textarea>
+
+                <div class="gng-campo">
+                    <label for="gngCorreo">Correo electrónico *</label>
+                    <input type="email" id="gngCorreo" name="correo" placeholder="cliente@empresa.cl" required>
+                </div>
+
+                <div class="gng-campo">
+                    <label for="gngServicio">Tipo de servicio *</label>
+                    <select id="gngServicio" name="servicio" required>
+                        <option value="" disabled selected>Seleccione una opción...</option>
+                        <option value="Traslado Aeroportuario (Diego Aracena)">Traslado Aeroportuario (Diego Aracena)</option>
+                        <option value="Transporte Privado / Corporativo de Pasajeros">Transporte Privado / Corporativo</option>
+                        <option value="Coordinación Logística / Encomiendas">Coordinación Logística / Encomiendas</option>
+                        <option value="Convenio Hoteles / Turismo">Convenio Hoteles / Turismo</option>
+                    </select>
+                </div>
+
+                <div class="gng-campo">
+                    <label for="gngDia">Fecha requerida *</label>
+                    <div class="gng-grupo-segmentado">
+                        <input type="text" id="gngDia" class="seg-2" inputmode="numeric" maxlength="2" placeholder="DD" aria-label="Día" required>
+                        <span class="sep">/</span>
+                        <input type="text" id="gngMes" class="seg-2" inputmode="numeric" maxlength="2" placeholder="MM" aria-label="Mes" required>
+                        <span class="sep">/</span>
+                        <input type="text" id="gngAnio" class="seg-4" inputmode="numeric" maxlength="4" placeholder="AAAA" aria-label="Año" required>
+                    </div>
+                </div>
+
+                <div class="gng-campo">
+                    <label for="gngHoraNum">Hora estimada *</label>
+                    <div class="gng-grupo-segmentado">
+                        <input type="text" id="gngHoraNum" class="seg-2" inputmode="numeric" maxlength="2" placeholder="HH" aria-label="Hora" required>
+                        <span class="sep">:</span>
+                        <input type="text" id="gngMinNum" class="seg-2" inputmode="numeric" maxlength="2" placeholder="MM" aria-label="Minutos" required>
+                        <select id="gngAmPm" class="sel-ampm" aria-label="AM o PM">
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="gng-campo">
+                    <label for="gngOrigen">Punto de origen *</label>
+                    <input type="text" id="gngOrigen" name="origen" placeholder="Ej: Aeropuerto Iquique / Dirección" required>
+                </div>
+
+                <div class="gng-campo">
+                    <label for="gngDestino">Punto de destino *</label>
+                    <input type="text" id="gngDestino" name="destino" placeholder="Ej: Sector Península / Zona Franca" required>
+                </div>
+
+                <div class="gng-campo">
+                    <label for="gngPasajeros">N° de pasajeros o bultos *</label>
+                    <input type="text" id="gngPasajeros" name="pasajeros" placeholder="Ej: 3 pasajeros + 2 maletas" required>
+                </div>
+
+                <div class="gng-campo">
+                    <label for="gngVuelo">N° de vuelo o referencia (opcional)</label>
+                    <input type="text" id="gngVuelo" name="vuelo" placeholder="Ej: Vuelo LA124 / Orden interna">
+                </div>
+
+                <div class="gng-campo gng-campo-full">
+                    <label for="gngDetalle">Observaciones adicionales</label>
+                    <textarea id="gngDetalle" name="detalle" rows="2" placeholder="Indique requerimientos especiales, horario de regreso o detalles de carga..."></textarea>
+                </div>
             </div>
 
-            <div id="mEstado" class="estado"></div>
+            <div class="gng-nota">
+                Al enviar su solicitud, nuestro equipo verificará disponibilidad con proveedores asociados y le responderá a la brevedad con la cotización formal.
+            </div>
 
-            <div class="acciones">
-                <button type="button" class="btn-wsp" id="mBtnWsp">Enviar por WhatsApp</button>
-                <button type="submit" class="btn-mail" id="mBtnMail">Enviar por Correo</button>
+            <div id="gngEstadoEnvio" class="gng-estado-envio" role="status" aria-live="polite"></div>
+
+            <div class="gng-acciones">
+                <button type="button" id="gngEnviarWsp" class="gng-btn gng-btn-wsp">
+                    Enviar por WhatsApp
+                </button>
+                <button type="submit" id="gngEnviarMail" class="gng-btn gng-btn-mail">
+                    Enviar por Correo
+                </button>
             </div>
         </form>
-    </section>
-
-    <div class="pie-movil">
-        Iquique, Región de Tarapacá · Chile · <a href="index.html?desktop=1">Ver versión escritorio</a>
     </div>
 </div>
 
 <script>
-const GNG_WSP = "56962301001";
-const GNG_MAIL = "reservas@gngnorte.cl";
+// Pausa / reanudación al clic
+const capaCreditos = document.getElementById("capaCreditos");
+const bloqueCreditos = document.getElementById("bloqueCreditos");
+const overlayFondo = document.getElementById("overlayFondo");
+const indicadorPausa = document.getElementById("indicadorPausa");
 
-function actualizarHora() {
-    const ahora = new Intl.DateTimeFormat("es-CL", {
-        timeZone: "America/Santiago",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false
-    }).format(new Date());
-    document.getElementById("horaChile").textContent = ahora;
+function alternarPausaCreditos() {
+    const estaPausado = capaCreditos.classList.toggle("pausado");
+    indicadorPausa.classList.toggle("visible", estaPausado);
 }
-actualizarHora();
-setInterval(actualizarHora, 15000);
+bloqueCreditos.addEventListener("click", alternarPausaCreditos);
+overlayFondo.addEventListener("click", alternarPausaCreditos);
 
-document.getElementById("irFormulario").addEventListener("click", function() {
-    document.getElementById("seccionSolicitud").scrollIntoView({ behavior: "smooth" });
-});
+// Reloj digital
+const reloj = document.getElementById("reloj");
+const segmentos = ["a","b","c","d","e","f","g"];
+const numeros = {
+    0: ["a","b","c","d","e","f"], 1: ["b","c"], 2: ["a","b","g","e","d"],
+    3: ["a","b","g","c","d"], 4: ["f","g","b","c"], 5: ["a","f","g","c","d"],
+    6: ["a","f","g","e","c","d"], 7: ["a","b","c"], 8: ["a","b","c","d","e","f","g"],
+    9: ["a","b","c","d","f","g"]
+};
 
-const selectServicio = document.getElementById("mServicio");
-document.querySelectorAll(".btn-servicio").forEach(function(btn) {
-    btn.addEventListener("click", function() {
-        document.querySelectorAll(".btn-servicio").forEach(b => b.classList.remove("activo"));
-        btn.classList.add("activo");
-        selectServicio.value = btn.getAttribute("data-servicio");
-        document.getElementById("seccionSolicitud").scrollIntoView({ behavior: "smooth" });
-    });
-});
-
-const formMovil = document.getElementById("formMovil");
-const estadoMovil = document.getElementById("mEstado");
-
-function mostrarEstado(tipo, msg) {
-    estadoMovil.className = "estado visible " + tipo;
-    estadoMovil.textContent = msg;
-}
-
-function obtenerValores() {
-    return {
-        nombre: document.getElementById("mNombre").value.trim(),
-        telefono: document.getElementById("mTelefono").value.trim(),
-        correo: document.getElementById("mCorreo").value.trim(),
-        servicio: selectServicio.value,
-        fecha: document.getElementById("mFecha").value.trim(),
-        hora: document.getElementById("mHora").value.trim(),
-        origen: document.getElementById("mOrigen").value.trim(),
-        destino: document.getElementById("mDestino").value.trim(),
-        detalle: document.getElementById("mDetalle").value.trim() || "Sin observaciones"
-    };
-}
-
-document.getElementById("mBtnWsp").addEventListener("click", function() {
-    if (!formMovil.reportValidity()) return;
-    const d = obtenerValores();
-    const texto = [
-        "*SOLICITUD DE RESERVA - GNG GESTIÓN NORTE SpA*",
-        "• *Cliente/Empresa:* " + d.nombre,
-        "• *Teléfono:* " + d.telefono,
-        "• *Correo:* " + d.correo,
-        "• *Servicio:* " + d.servicio,
-        "• *Fecha y Hora:* " + d.fecha + " " + d.hora,
-        "• *Origen:* " + d.origen,
-        "• *Destino:* " + d.destino,
-        "• *Detalles:* " + d.detalle
-    ].join("\n");
-    window.open("https://wa.me/" + GNG_WSP + "?text=" + encodeURIComponent(texto), "_blank", "noopener");
-});
-
-formMovil.addEventListener("submit", async function(e) {
-    e.preventDefault();
-    if (!formMovil.reportValidity()) return;
-    const d = obtenerValores();
-    const btn = document.getElementById("mBtnMail");
-    btn.disabled = true;
-    btn.textContent = "Enviando...";
-    try {
-        const res = await fetch("https://formsubmit.co/ajax/" + GNG_MAIL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", "Accept": "application/json" },
-            body: JSON.stringify({
-                _subject: "Reserva Móvil GNG: " + d.servicio + " - " + d.nombre,
-                _replyto: d.correo,
-                "Cliente o Empresa": d.nombre,
-                "Teléfono": d.telefono,
-                "Correo": d.correo,
-                "Servicio": d.servicio,
-                "Fecha": d.fecha,
-                "Hora": d.hora,
-                "Origen": d.origen,
-                "Destino": d.destino,
-                "Detalles": d.detalle
-            })
-        });
-        const data = await res.json();
-        if (res.ok && data.success !== "false") {
-            mostrarEstado("ok", "Solicitud enviada correctamente a " + GNG_MAIL + ".");
-            formMovil.reset();
-        } else {
-            throw new Error();
-        }
-    } catch (_) {
-        mostrarEstado("error", "No se pudo enviar por correo en este momento. Usa 'Enviar por WhatsApp'.");
-    } finally {
-        btn.disabled = false;
-        btn.textContent = "Enviar por Correo";
-    }
-});
-</script>
-</body>
-</html>
+function crearDigito(numero) {
+    const digito = document.createElement("div");
+    digito.className = "digito";
+    segmentos.forEach(function(nombre) {
+        const pieza = document.createElement("span");
+        pieza.className = "seg " + nombre;
+        if (numeros
