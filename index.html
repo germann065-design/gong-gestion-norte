@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script>
+(function() {
+    if (window.location.search.indexOf("desktop=1") !== -1) return;
+    var esPantallaChica = window.matchMedia && window.matchMedia("(max-width: 850px)").matches;
+    var esDispositivoMovil = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if ((esPantallaChica || esDispositivoMovil) && !window.location.pathname.endsWith("movil.html")) {
+        window.location.replace("movil.html");
+    }
+})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#08090d">
@@ -1090,201 +1100,4 @@ function cambiarFotografia() {
 setInterval(cambiarFotografia, 20000);
 
 // =================================
-// LÓGICA DEL MODAL DE RESERVAS GNG
-// =================================
-(function() {
-    const GNG_WHATSAPP = "56962301001";
-    const GNG_CORREO = "reservas@gngnorte.cl";
-    const GNG_ENDPOINT = "https://formsubmit.co/ajax/" + GNG_CORREO;
-
-    const modal = document.getElementById("gngModalReservas");
-    const btnAbrir = document.getElementById("abrirReservasGNG");
-    const btnCerrar = document.getElementById("cerrarReservasGNG");
-    const form = document.getElementById("gngFormReserva");
-    const btnWsp = document.getElementById("gngEnviarWsp");
-    const btnMail = document.getElementById("gngEnviarMail");
-    const estadoEnvio = document.getElementById("gngEstadoEnvio");
-
-    const inpDia = document.getElementById("gngDia");
-    const inpMes = document.getElementById("gngMes");
-    const inpAnio = document.getElementById("gngAnio");
-    const inpHoraNum = document.getElementById("gngHoraNum");
-    const inpMinNum = document.getElementById("gngMinNum");
-    const selAmPm = document.getElementById("gngAmPm");
-
-    function configurarAutoSalto(actual, siguiente, maxLen, minVal, maxVal, esSelect) {
-        actual.addEventListener("input", function() {
-            this.value = this.value.replace(/\D/g, "");
-            if (this.value.length === maxLen) {
-                let num = parseInt(this.value, 10);
-                if (!isNaN(num)) {
-                    if (num < minVal) this.value = String(minVal).padStart(maxLen, "0");
-                    if (num > maxVal) this.value = String(maxVal).padStart(maxLen, "0");
-                }
-                if (siguiente) {
-                    siguiente.focus();
-                    if (!esSelect && siguiente.select) {
-                        siguiente.select();
-                    } else if (esSelect && typeof siguiente.showPicker === "function") {
-                        try { siguiente.showPicker(); } catch (_) {}
-                    }
-                }
-            }
-        });
-
-        actual.addEventListener("blur", function() {
-            if (this.value.length === 1 && maxLen === 2) {
-                let num = parseInt(this.value, 10);
-                if (num < minVal) num = minVal;
-                this.value = String(num).padStart(2, "0");
-            }
-        });
-    }
-
-    configurarAutoSalto(inpDia, inpMes, 2, 1, 31, false);
-    configurarAutoSalto(inpMes, inpAnio, 2, 1, 12, false);
-    configurarAutoSalto(inpAnio, inpHoraNum, 4, 2026, 2035, false);
-    configurarAutoSalto(inpHoraNum, inpMinNum, 2, 1, 12, false);
-    configurarAutoSalto(inpMinNum, selAmPm, 2, 0, 59, true);
-
-    function mostrarEstado(tipo, texto) {
-        estadoEnvio.className = "gng-estado-envio visible " + tipo;
-        estadoEnvio.textContent = texto;
-    }
-
-    function limpiarEstado() {
-        estadoEnvio.className = "gng-estado-envio";
-        estadoEnvio.textContent = "";
-    }
-
-    function abrirModal(e) {
-        if (e) e.preventDefault();
-        limpiarEstado();
-        modal.classList.add("abierto");
-        modal.setAttribute("aria-hidden", "false");
-    }
-
-    function cerrarModal() {
-        modal.classList.remove("abierto");
-        modal.setAttribute("aria-hidden", "true");
-    }
-
-    if (btnAbrir) btnAbrir.addEventListener("click", abrirModal);
-    if (btnCerrar) btnCerrar.addEventListener("click", cerrarModal);
-
-    modal.addEventListener("click", function(e) {
-        if (e.target === modal) cerrarModal();
-    });
-
-    document.addEventListener("keydown", function(e) {
-        if (e.key === "Escape" && modal.classList.contains("abierto")) cerrarModal();
-    });
-
-    function obtenerDatos() {
-        const dia = inpDia.value.padStart(2, "0");
-        const mes = inpMes.value.padStart(2, "0");
-        const anio = inpAnio.value;
-        const hora = inpHoraNum.value.padStart(2, "0");
-        const min = inpMinNum.value.padStart(2, "0");
-        const ampm = selAmPm.value;
-
-        return {
-            nombre: document.getElementById("gngNombre").value.trim(),
-            telefono: document.getElementById("gngTelefono").value.trim(),
-            correo: document.getElementById("gngCorreo").value.trim(),
-            servicio: document.getElementById("gngServicio").value,
-            fecha: dia + "/" + mes + "/" + anio,
-            hora: hora + ":" + min + " " + ampm,
-            origen: document.getElementById("gngOrigen").value.trim(),
-            destino: document.getElementById("gngDestino").value.trim(),
-            pasajeros: document.getElementById("gngPasajeros").value.trim(),
-            vuelo: document.getElementById("gngVuelo").value.trim() || "No especificado",
-            detalle: document.getElementById("gngDetalle").value.trim() || "Sin observaciones adicionales"
-        };
-    }
-
-    function construirResumen(datos) {
-        return [
-            "*SOLICITUD DE RESERVA - GNG GESTIÓN NORTE SpA*",
-            "----------------------------------------",
-            "• *Cliente / Empresa:* " + datos.nombre,
-            "• *Teléfono:* " + datos.telefono,
-            "• *Correo:* " + datos.correo,
-            "• *Servicio:* " + datos.servicio,
-            "• *Fecha y Hora:* " + datos.fecha + " a las " + datos.hora,
-            "• *Origen:* " + datos.origen,
-            "• *Destino:* " + datos.destino,
-            "• *Pasajeros / Carga:* " + datos.pasajeros,
-            "• *Vuelo / Referencia:* " + datos.vuelo,
-            "• *Observaciones:* " + datos.detalle
-        ].join("\n");
-    }
-
-    btnWsp.addEventListener("click", function() {
-        if (!form.reportValidity()) return;
-        const datos = obtenerDatos();
-        const mensaje = encodeURIComponent(construirResumen(datos));
-        window.open("https://wa.me/" + GNG_WHATSAPP + "?text=" + mensaje, "_blank", "noopener");
-    });
-
-    form.addEventListener("submit", async function(e) {
-        e.preventDefault();
-        if (!form.reportValidity()) return;
-
-        const datos = obtenerDatos();
-        const textoOriginal = btnMail.textContent;
-        btnMail.disabled = true;
-        btnMail.textContent = "Enviando...";
-        limpiarEstado();
-
-        try {
-            const resp = await fetch(GNG_ENDPOINT, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"
-                },
-                body: JSON.stringify({
-                    _subject: "Solicitud de Reserva GNG: " + datos.servicio + " - " + datos.nombre,
-                    _replyto: datos.correo,
-                    _template: "table",
-                    "Cliente o Empresa": datos.nombre,
-                    "Teléfono / WhatsApp": datos.telefono,
-                    "Correo Cliente": datos.correo,
-                    "Tipo de Servicio": datos.servicio,
-                    "Fecha Requerida": datos.fecha,
-                    "Hora Estimada": datos.hora,
-                    "Punto de Origen": datos.origen,
-                    "Punto de Destino": datos.destino,
-                    "Pasajeros o Bultos": datos.pasajeros,
-                    "Vuelo o Referencia": datos.vuelo,
-                    "Observaciones": datos.detalle
-                })
-            });
-
-            const resultado = await resp.json();
-
-            if (resp.ok && resultado.success !== "false") {
-                mostrarEstado(
-                    "ok",
-                    "¡Solicitud enviada correctamente a " + GNG_CORREO + "! Revisa tu bandeja de entrada."
-                );
-                form.reset();
-            } else {
-                throw new Error(resultado.message || "No se pudo completar el envío.");
-            }
-        } catch (err) {
-            mostrarEstado(
-                "error",
-                "No se pudo enviar automáticamente en este momento. Puedes usar el botón 'Enviar por WhatsApp' o escribir directamente a " + GNG_CORREO + "."
-            );
-        } finally {
-            btnMail.disabled = false;
-            btnMail.textContent = textoOriginal;
-        }
-    });
-})();
-</script>
-
-</body>
-</html>
+// LÓGICA DEL MODAL DE RESERV
