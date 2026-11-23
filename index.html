@@ -289,7 +289,7 @@ body {
 }
 
 /* =================================
-   TARJETA PRINCIPAL DE EMPRESA
+   TARJETA PRINCIPAL DE EMPRESA (PASO 3)
 ================================= */
 
 .tarjeta-empresa {
@@ -412,8 +412,6 @@ h1 {
     letter-spacing: 1px;
     box-shadow: 0 8px 25px rgba(255,100,20,.35);
     transition: transform .2s;
-    cursor: pointer;
-    border: none;
 }
 
 .btn-contacto:hover {
@@ -438,313 +436,6 @@ h1 {
 
 .pie strong {
     color: #ffad4b;
-}
-
-/* =================================
-   MODAL DE RESERVAS GNG
-================================= */
-
-.gng-modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: rgba(5, 7, 13, 0.84);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-}
-
-.gng-modal-overlay.abierto {
-    display: flex;
-}
-
-.gng-modal-card {
-    position: relative;
-    width: 100%;
-    max-width: 650px;
-    max-height: 92vh;
-    overflow-y: auto;
-    background: linear-gradient(180deg, #16181f 0%, #0d0f14 100%);
-    border: 1px solid rgba(255, 169, 69, 0.42);
-    border-radius: 20px;
-    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.85);
-    color: #f3f4f6;
-    font-family: inherit;
-    animation: gngModalEntrar 0.25s ease-out;
-}
-
-@keyframes gngModalEntrar {
-    from { opacity: 0; transform: translateY(14px) scale(0.98); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.gng-modal-header {
-    position: relative;
-    height: 215px;
-    overflow: hidden;
-    border-bottom: 1px solid rgba(255, 169, 69, 0.28);
-}
-
-.gng-modal-header img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 45%;
-    display: block;
-}
-
-.gng-modal-header-grad {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        180deg,
-        rgba(10, 12, 16, 0.20) 0%,
-        rgba(13, 15, 20, 0.72) 60%,
-        rgba(13, 15, 20, 0.98) 100%
-    );
-}
-
-.gng-modal-cerrar {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    z-index: 2;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    background: rgba(13, 15, 20, 0.78);
-    color: #ffffff;
-    font-size: 20px;
-    line-height: 1;
-    cursor: pointer;
-    transition: background 0.2s, border-color 0.2s;
-}
-
-.gng-modal-cerrar:hover {
-    background: #f5821f;
-    border-color: #f5821f;
-}
-
-.gng-modal-titulo-box {
-    position: absolute;
-    left: 24px;
-    right: 24px;
-    bottom: 16px;
-    z-index: 2;
-}
-
-.gng-modal-badge {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: rgba(245, 130, 31, 0.20);
-    border: 1px solid rgba(245, 130, 31, 0.55);
-    color: #ffb15e;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-}
-
-.gng-modal-titulo-box h2 {
-    margin: 0 0 4px 0;
-    font-size: 22px;
-    font-weight: 700;
-    color: #ffffff;
-}
-
-.gng-modal-titulo-box p {
-    margin: 0;
-    font-size: 13px;
-    color: #cbd5e1;
-}
-
-.gng-form {
-    padding: 20px 24px 24px;
-}
-
-.gng-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-}
-
-.gng-campo {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.gng-campo-full {
-    grid-column: 1 / -1;
-}
-
-.gng-campo label {
-    font-size: 12px;
-    font-weight: 600;
-    color: #e2e8f0;
-    letter-spacing: 0.02em;
-}
-
-.gng-campo input,
-.gng-campo select,
-.gng-campo textarea {
-    width: 100%;
-    padding: 11px 13px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: rgba(255, 255, 255, 0.05);
-    color: #ffffff;
-    font-size: 14px;
-    font-family: inherit;
-    outline: none;
-    transition: border-color 0.2s, background 0.2s;
-}
-
-.gng-campo select option {
-    background: #16181f;
-    color: #ffffff;
-}
-
-.gng-campo input:focus,
-.gng-campo select:focus,
-.gng-campo textarea:focus {
-    border-color: #f5821f;
-    background: rgba(255, 255, 255, 0.08);
-}
-
-/* Solo Fecha requerida y Hora estimada segmentadas con salto automático */
-.gng-grupo-segmentado {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 5px 10px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: rgba(255, 255, 255, 0.05);
-    transition: border-color 0.2s, background 0.2s;
-}
-
-.gng-grupo-segmentado:focus-within {
-    border-color: #f5821f;
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.gng-grupo-segmentado input {
-    border: none !important;
-    background: transparent !important;
-    padding: 6px 2px !important;
-    text-align: center;
-    font-weight: 700;
-    font-size: 14px;
-}
-
-.gng-grupo-segmentado input.seg-2 {
-    width: 34px;
-}
-
-.gng-grupo-segmentado input.seg-4 {
-    width: 54px;
-}
-
-.gng-grupo-segmentado span.sep {
-    color: #ffad4b;
-    font-weight: bold;
-    user-select: none;
-}
-
-.gng-grupo-segmentado select.sel-ampm {
-    margin-left: auto;
-    width: 74px;
-    padding: 6px 8px !important;
-    border-radius: 7px !important;
-    border: 1px solid rgba(255, 169, 69, 0.45) !important;
-    background: rgba(245, 130, 31, 0.18) !important;
-    color: #ffcf8b !important;
-    font-weight: 700;
-    font-size: 13px;
-    cursor: pointer;
-}
-
-.gng-nota {
-    margin-top: 14px;
-    padding: 10px 14px;
-    border-radius: 10px;
-    background: rgba(245, 130, 31, 0.10);
-    border-left: 3px solid #f5821f;
-    font-size: 12.5px;
-    color: #e2e8f0;
-    line-height: 1.45;
-}
-
-.gng-estado-envio {
-    display: none;
-    margin-top: 12px;
-    padding: 10px 14px;
-    border-radius: 10px;
-    font-size: 12.5px;
-    line-height: 1.45;
-}
-
-.gng-estado-envio.visible {
-    display: block;
-}
-
-.gng-estado-envio.ok {
-    background: rgba(34, 197, 94, 0.14);
-    border: 1px solid rgba(34, 197, 94, 0.45);
-    color: #bbf7d0;
-}
-
-.gng-estado-envio.error {
-    background: rgba(239, 68, 68, 0.14);
-    border: 1px solid rgba(239, 68, 68, 0.45);
-    color: #fecaca;
-}
-
-.gng-acciones {
-    margin-top: 18px;
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 12px;
-}
-
-.gng-btn {
-    padding: 13px 16px;
-    border-radius: 999px;
-    border: none;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    transition: transform 0.15s, filter 0.2s, opacity 0.2s;
-}
-
-.gng-btn:disabled {
-    opacity: 0.65;
-    cursor: not-allowed;
-}
-
-.gng-btn:hover:not(:disabled) {
-    transform: translateY(-1px);
-    filter: brightness(1.06);
-}
-
-.gng-btn-wsp {
-    background: linear-gradient(135deg, #25d366 0%, #16a34a 100%);
-    color: #ffffff;
-    box-shadow: 0 8px 22px rgba(37, 211, 102, 0.28);
-}
-
-.gng-btn-mail {
-    background: linear-gradient(135deg, #f89b29 0%, #f5821f 100%);
-    color: #ffffff;
-    box-shadow: 0 8px 22px rgba(245, 130, 31, 0.28);
 }
 
 @media (max-width: 1440px) {
@@ -781,12 +472,6 @@ h1 {
         height: 360px;
         margin: 0 auto 30px;
     }
-}
-
-@media (max-width: 600px) {
-    .gng-grid { grid-template-columns: 1fr; }
-    .gng-acciones { grid-template-columns: 1fr; }
-    .gng-modal-header { height: 175px; }
 }
 </style>
 </head>
@@ -891,125 +576,14 @@ h1 {
     </section>
 
     <section class="contacto-box">
-        <button type="button" class="btn-contacto" id="abrirReservasGNG">
+        <a class="btn-contacto" href="#reservar">
             RESERVAR SERVICIO
-        </button>
+        </a>
         <div class="dato-extra">Iquique, Región de Tarapacá · Chile</div>
     </section>
 
     <div class="pie">SITIO OFICIAL · <strong>GNG GESTIÓN NORTE SpA</strong></div>
 </main>
-
-<!-- MODAL DE RESERVAS GNG -->
-<div id="gngModalReservas" class="gng-modal-overlay" aria-hidden="true">
-    <div class="gng-modal-card" role="dialog" aria-modal="true" aria-labelledby="gngModalTitulo">
-
-        <div class="gng-modal-header">
-            <img src="foto 3.jpg" alt="Bahía de Iquique - GNG Gestión Norte SpA">
-            <div class="gng-modal-header-grad"></div>
-            <button type="button" id="cerrarReservasGNG" class="gng-modal-cerrar" aria-label="Cerrar ventana">&times;</button>
-            <div class="gng-modal-titulo-box">
-                <span class="gng-modal-badge">Iquique · Región de Tarapacá</span>
-                <h2 id="gngModalTitulo">Solicitud de Servicio y Reservas</h2>
-                <p>Coordinación personalizada con confirmación directa de disponibilidad y tarifa.</p>
-            </div>
-        </div>
-
-        <form id="gngFormReserva" class="gng-form">
-            <div class="gng-grid">
-                <div class="gng-campo">
-                    <label for="gngNombre">Nombre o Empresa *</label>
-                    <input type="text" id="gngNombre" name="nombre" placeholder="Ej: Juan Pérez / Hotel Cavancha" required>
-                </div>
-
-                <div class="gng-campo">
-                    <label for="gngTelefono">Teléfono / WhatsApp *</label>
-                    <input type="tel" id="gngTelefono" name="telefono" placeholder="Ej: +56 9 1234 5678" required>
-                </div>
-
-                <div class="gng-campo">
-                    <label for="gngCorreo">Correo electrónico *</label>
-                    <input type="email" id="gngCorreo" name="correo" placeholder="cliente@empresa.cl" required>
-                </div>
-
-                <div class="gng-campo">
-                    <label for="gngServicio">Tipo de servicio *</label>
-                    <select id="gngServicio" name="servicio" required>
-                        <option value="" disabled selected>Seleccione una opción...</option>
-                        <option value="Traslado Aeroportuario (Diego Aracena)">Traslado Aeroportuario (Diego Aracena)</option>
-                        <option value="Transporte Privado / Corporativo de Pasajeros">Transporte Privado / Corporativo</option>
-                        <option value="Coordinación Logística / Encomiendas">Coordinación Logística / Encomiendas</option>
-                        <option value="Convenio Hoteles / Turismo">Convenio Hoteles / Turismo</option>
-                    </select>
-                </div>
-
-                <div class="gng-campo">
-                    <label for="gngDia">Fecha requerida *</label>
-                    <div class="gng-grupo-segmentado">
-                        <input type="text" id="gngDia" class="seg-2" inputmode="numeric" maxlength="2" placeholder="DD" aria-label="Día" required>
-                        <span class="sep">/</span>
-                        <input type="text" id="gngMes" class="seg-2" inputmode="numeric" maxlength="2" placeholder="MM" aria-label="Mes" required>
-                        <span class="sep">/</span>
-                        <input type="text" id="gngAnio" class="seg-4" inputmode="numeric" maxlength="4" placeholder="AAAA" aria-label="Año" required>
-                    </div>
-                </div>
-
-                <div class="gng-campo">
-                    <label for="gngHoraNum">Hora estimada *</label>
-                    <div class="gng-grupo-segmentado">
-                        <input type="text" id="gngHoraNum" class="seg-2" inputmode="numeric" maxlength="2" placeholder="HH" aria-label="Hora" required>
-                        <span class="sep">:</span>
-                        <input type="text" id="gngMinNum" class="seg-2" inputmode="numeric" maxlength="2" placeholder="MM" aria-label="Minutos" required>
-                        <select id="gngAmPm" class="sel-ampm" aria-label="AM o PM">
-                            <option value="AM">AM</option>
-                            <option value="PM">PM</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="gng-campo">
-                    <label for="gngOrigen">Punto de origen *</label>
-                    <input type="text" id="gngOrigen" name="origen" placeholder="Ej: Aeropuerto Iquique / Dirección" required>
-                </div>
-
-                <div class="gng-campo">
-                    <label for="gngDestino">Punto de destino *</label>
-                    <input type="text" id="gngDestino" name="destino" placeholder="Ej: Sector Península / Zona Franca" required>
-                </div>
-
-                <div class="gng-campo">
-                    <label for="gngPasajeros">N° de pasajeros o bultos *</label>
-                    <input type="text" id="gngPasajeros" name="pasajeros" placeholder="Ej: 3 pasajeros + 2 maletas" required>
-                </div>
-
-                <div class="gng-campo">
-                    <label for="gngVuelo">N° de vuelo o referencia (opcional)</label>
-                    <input type="text" id="gngVuelo" name="vuelo" placeholder="Ej: Vuelo LA124 / Orden interna">
-                </div>
-
-                <div class="gng-campo gng-campo-full">
-                    <label for="gngDetalle">Observaciones adicionales</label>
-                    <textarea id="gngDetalle" name="detalle" rows="2" placeholder="Indique requerimientos especiales, horario de regreso o detalles de carga..."></textarea>
-                </div>
-            </div>
-
-            <div class="gng-nota">
-                Al enviar su solicitud, nuestro equipo verificará disponibilidad con proveedores asociados y le responderá a la brevedad con la cotización formal.
-            </div>
-
-            <div id="gngEstadoEnvio" class="gng-estado-envio" role="status" aria-live="polite"></div>
-
-            <div class="gng-acciones">
-                <button type="button" id="gngEnviarWsp" class="gng-btn gng-btn-wsp">
-                    Enviar por WhatsApp
-                </button>
-                <button type="submit" id="gngEnviarMail" class="gng-btn gng-btn-mail">
-                    Enviar por Correo
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
 
 <script>
 // Pausa / reanudación al clic
@@ -1041,4 +615,63 @@ function crearDigito(numero) {
     segmentos.forEach(function(nombre) {
         const pieza = document.createElement("span");
         pieza.className = "seg " + nombre;
-        if (numeros
+        if (numeros[numero].includes(nombre)) pieza.classList.add("encendido");
+        digito.appendChild(pieza);
+    });
+    return digito;
+}
+
+function dibujarReloj() {
+    const partes = new Intl.DateTimeFormat("es-CL", {
+        timeZone: "America/Santiago", hour: "2-digit", minute: "2-digit", hourCycle: "h23"
+    }).formatToParts(new Date());
+    const hora = partes.find(p => p.type === "hour").value;
+    const minuto = partes.find(p => p.type === "minute").value;
+    reloj.innerHTML = "";
+    reloj.appendChild(crearDigito(hora[0]));
+    reloj.appendChild(crearDigito(hora[1]));
+    const dosPuntos = document.createElement("div");
+    dosPuntos.className = "dos-puntos";
+    dosPuntos.innerHTML = "<span></span><span></span>";
+    reloj.appendChild(dosPuntos);
+    reloj.appendChild(crearDigito(minuto[0]));
+    reloj.appendChild(crearDigito(minuto[1]));
+}
+dibujarReloj();
+setInterval(dibujarReloj, 1000);
+
+function dibujarFecha() {
+    const fecha = new Intl.DateTimeFormat("es-CL", {
+        timeZone: "America/Santiago", weekday: "long", day: "numeric", month: "long", year: "numeric"
+    }).format(new Date());
+    document.getElementById("fecha").textContent = fecha.toUpperCase();
+}
+dibujarFecha();
+setInterval(dibujarFecha, 60000);
+
+// Rotación de fotos de fondo cada 20 segundos
+const imagenes = [
+    "foto 1.png",
+    "foto 2.jpg"
+];
+const fondo1 = document.getElementById("fondo1");
+const fondo2 = document.getElementById("fondo2");
+let indiceFoto = 0;
+let fondoActivo = 1;
+fondo1.style.backgroundImage = `url("${imagenes[0]}")`;
+imagenes.forEach(src => { const img = new Image(); img.src = src; });
+
+function cambiarFotografia() {
+    indiceFoto = (indiceFoto + 1) % imagenes.length;
+    const siguiente = fondoActivo === 1 ? fondo2 : fondo1;
+    const anterior = fondoActivo === 1 ? fondo1 : fondo2;
+    siguiente.style.backgroundImage = `url("${imagenes[indiceFoto]}")`;
+    siguiente.style.opacity = "1";
+    anterior.style.opacity = "0";
+    fondoActivo = fondoActivo === 1 ? 2 : 1;
+}
+setInterval(cambiarFotografia, 20000);
+</script>
+
+</body>
+</html>
