@@ -198,7 +198,7 @@ body {
 }
 
 /* =================================
-   RELOJ DIGITAL SIETE SEGMENTOS
+   RELOJ DIGITAL SIETE SEGMENTOS (SIN SOMBRA FANTASMA)
 ================================= */
 
 .reloj {
@@ -219,16 +219,14 @@ body {
 
 .seg {
     position: absolute;
-    background: #382719;
-    opacity: .55;
+    background: transparent;
+    opacity: 0;
 }
 
 .seg.encendido {
     background: #ff9b35;
     opacity: 1;
-    filter:
-        drop-shadow(0 0 4px #ff791b)
-        drop-shadow(0 0 9px rgba(255,140,35,.65));
+    filter: none;
 }
 
 .seg.a, .seg.g, .seg.d {
@@ -269,7 +267,7 @@ body {
     height: 6px;
     background: #ff9b35;
     border-radius: 1px;
-    box-shadow: 0 0 8px #ff791b;
+    box-shadow: none;
 }
 
 @keyframes parpadeo {
@@ -800,65 +798,35 @@ h1 {
 <div class="capa-creditos" id="capaCreditos" title="Haz clic para pausar o reanudar la lectura">
     <div class="bloque-creditos" id="bloqueCreditos">
         <div class="credito-titulo">GNG GESTIÓN NORTE SpA</div>
-        <div class="credito-subtitulo">UN SERVICIO, MÚLTIPLES SOLUCIONES</div>
+        <div class="credito-subtitulo">CENTRAL DE RESERVAS Y COORDINACIÓN</div>
 
-        <h2>Gestión de Transporte y Logística</h2>
-        <p>Nacemos con el propósito de entregar soluciones de coordinación y gestión de transporte de pasajeros y logística, conectando empresas, hoteles, agencias de turismo y proveedores especializados.</p>
-        <p>Desde Iquique, Región de Tarapacá, simplificamos la contratación y coordinación de cada requerimiento con organización, comunicación transparente y relaciones comerciales con proveedores externos.</p>
-        <p><strong>Nuestro compromiso es coordinar soluciones confiables, entregando una atención profesional y orientada a las necesidades de nuestros clientes.</strong></p>
+        <h2>Reservas y Coordinación</h2>
+        <p>Central de reservas y coordinación en Iquique y la Región de Tarapacá, conectando requerimientos de traslado y encomiendas con transportistas externos seleccionados.</p>
+        <p><strong>Coordinamos su solicitud con enfoque práctico, comunicación clara y enlace directo con el conductor asignado.</strong></p>
 
-        <h2>Soluciones que Ofrecemos</h2>
+        <h2>Servicios Coordinados</h2>
 
-        <h3>Traslados aeroportuarios</h3>
-        <p>Coordinación desde y hacia el aeropuerto mediante reservas anticipadas y proveedores externos.</p>
+        <h3>Traslados de pasajeros</h3>
+        <p>Coordinación de traslados particulares, ejecutivos y hacia o desde el aeropuerto mediante reservas programadas.</p>
         <ul>
-            <li>Traslados de llegada y salida.</li>
-            <li>Coordinación de horarios de vuelos.</li>
-            <li>Transporte para huéspedes y ejecutivos.</li>
-            <li>Reservas individuales y grupales.</li>
+            <li>Retiros y traslados programados.</li>
+            <li>Movilidad particular y ejecutiva.</li>
+            <li>Conexión con transportistas asociados.</li>
         </ul>
 
-        <h3>Gestión de transporte de pasajeros</h3>
-        <p>Movilidad privada y programada conectando clientes con proveedores externos.</p>
+        <h3>Encomiendas y carga menor</h3>
+        <p>Coordinación de envíos de cajas, documentos, paquetes y materiales mediante vehículos asociados.</p>
         <ul>
-            <li>Traslados corporativos.</li>
-            <li>Movilidad para trabajadores y ejecutivos.</li>
-            <li>Transporte para visitantes.</li>
-            <li>Servicios previamente programados.</li>
+            <li>Entrega de documentos y sobres.</li>
+            <li>Traslado de cajas y paquetes.</li>
+            <li>Despacho de materiales y encargos.</li>
         </ul>
 
-        <h3>Coordinación logística</h3>
-        <p>Requerimientos logísticos de pequeña escala mediante proveedores externos según cada encargo.</p>
-        <ul>
-            <li>Entrega de documentos.</li>
-            <li>Transporte de paquetes.</li>
-            <li>Coordinación de entregas.</li>
-            <li>Gestión de encargos empresariales.</li>
-        </ul>
+        <h2>Alcance y Abono de Reserva</h2>
+        <p>Operamos exclusivamente como central de reservas y coordinación, sin flota propia; una vez concretado el enlace con el transportista asignado, la ejecución del traslado queda a cargo de dicho operador.</p>
+        <p>Las reservas confirmadas consideran un abono del 20 % para asegurar la asignación y el horario coordinado.</p>
 
-        <h3>Soluciones para hoteles y turismo</h3>
-        <p>Gestión centralizada de solicitudes de transporte para establecimientos turísticos y agencias.</p>
-        <ul>
-            <li>Reservas para huéspedes.</li>
-            <li>Coordinación de pasajeros.</li>
-            <li>Servicios programados.</li>
-            <li>Gestión de requerimientos turísticos.</li>
-        </ul>
-
-        <h2>Nuestro Modelo de Coordinación</h2>
-        <p>Gestión organizada, comunicación transparente y soluciones conectadas. Actuamos como punto de contacto centralizado entre clientes y proveedores externos especializados, sin depender de flota propia para mantener una estructura flexible.</p>
-
-        <h3>¿Cómo trabajamos?</h3>
-        <ol>
-            <li><strong>Recepción:</strong> escuchamos y registramos las necesidades de nuestros clientes.</li>
-            <li><strong>Planificación:</strong> evaluamos requerimientos, fechas, horarios y condiciones del servicio.</li>
-            <li><strong>Coordinación:</strong> consultamos disponibilidad y alternativas con proveedores externos.</li>
-            <li><strong>Confirmación:</strong> presentamos las condiciones comerciales y formalizamos la reserva una vez aceptada.</li>
-            <li><strong>Ejecución:</strong> coordinamos la prestación del servicio con el proveedor correspondiente para su retiro.</li>
-            <li><strong>Seguimiento:</strong> mantenemos comunicación con el cliente y gestionamos el cierre del requerimiento.</li>
-        </ol>
-
-        <div class="credito-cierre">Coordinamos necesidades. Gestionamos soluciones. Conectamos servicios.<br>GNG GESTIÓN NORTE SpA — Iquique, Chile</div>
+        <div class="credito-cierre">GNG GESTIÓN NORTE SpA — Iquique, Chile</div>
     </div>
 </div>
 
@@ -871,7 +839,7 @@ h1 {
 
 <main class="tarjeta-empresa">
     <section class="identidad">
-        <div class="marca">GESTIÓN · TRANSPORTE Y LOGÍSTICA</div>
+        <div class="marca">CENTRAL DE RESERVAS Y COORDINACIÓN</div>
         <h1>GNG GESTIÓN NORTE SpA</h1>
         <div class="subtitulo">UN SERVICIO, MÚLTIPLES SOLUCIONES</div>
         <div class="etiqueta-estado">
@@ -885,7 +853,7 @@ h1 {
         <ul>
             <li>Traslados aeroportuarios</li>
             <li>Transporte de pasajeros</li>
-            <li>Logística y turismo</li>
+            <li>Encomiendas y carga menor</li>
         </ul>
     </section>
 
@@ -910,7 +878,7 @@ h1 {
             <div class="gng-modal-titulo-box">
                 <span class="gng-modal-badge">Iquique · Región de Tarapacá</span>
                 <h2 id="gngModalTitulo">Solicitud de Servicio y Reservas</h2>
-                <p>Coordinación personalizada con confirmación directa de disponibilidad y tarifa.</p>
+                <p>Coordinación de reservas con confirmación de disponibilidad y abono del 20 %.</p>
             </div>
         </div>
 
@@ -918,7 +886,7 @@ h1 {
             <div class="gng-grid">
                 <div class="gng-campo">
                     <label for="gngNombre">Nombre o Empresa *</label>
-                    <input type="text" id="gngNombre" name="nombre" placeholder="Ej: Juan Pérez / Hotel Cavancha" required>
+                    <input type="text" id="gngNombre" name="nombre" placeholder="Ej: Juan Pérez / Empresa" required>
                 </div>
 
                 <div class="gng-campo">
@@ -938,7 +906,6 @@ h1 {
                         <option value="Traslado Aeroportuario (Diego Aracena)">Traslado Aeroportuario (Diego Aracena)</option>
                         <option value="Transporte Privado / Corporativo de Pasajeros">Transporte Privado / Corporativo</option>
                         <option value="Coordinación Logística / Encomiendas">Coordinación Logística / Encomiendas</option>
-                        <option value="Convenio Hoteles / Turismo">Convenio Hoteles / Turismo</option>
                     </select>
                 </div>
 
@@ -967,33 +934,33 @@ h1 {
                 </div>
 
                 <div class="gng-campo">
-                    <label for="gngOrigen">Punto de origen *</label>
-                    <input type="text" id="gngOrigen" name="origen" placeholder="Ej: Aeropuerto Iquique / Dirección" required>
+                    <label for="gngOrigen">Lugar de retiro *</label>
+                    <input type="text" id="gngOrigen" name="origen" placeholder="Ej: Aeropuerto / Dirección" required>
                 </div>
 
                 <div class="gng-campo">
-                    <label for="gngDestino">Punto de destino *</label>
-                    <input type="text" id="gngDestino" name="destino" placeholder="Ej: Sector Península / Zona Franca" required>
+                    <label for="gngDestino">Lugar de entrega o llegada *</label>
+                    <input type="text" id="gngDestino" name="destino" placeholder="Ej: Sector Península / Dirección" required>
                 </div>
 
                 <div class="gng-campo">
                     <label for="gngPasajeros">N° de pasajeros o bultos *</label>
-                    <input type="text" id="gngPasajeros" name="pasajeros" placeholder="Ej: 3 pasajeros + 2 maletas" required>
+                    <input type="text" id="gngPasajeros" name="pasajeros" placeholder="Ej: 3 pasajeros o 2 cajas" required>
                 </div>
 
                 <div class="gng-campo">
-                    <label for="gngVuelo">N° de vuelo o referencia (opcional)</label>
-                    <input type="text" id="gngVuelo" name="vuelo" placeholder="Ej: Vuelo LA124 / Orden interna">
+                    <label for="gngVuelo">Referencia o detalle breve (opcional)</label>
+                    <input type="text" id="gngVuelo" name="vuelo" placeholder="Ej: Orden interna o bulto">
                 </div>
 
                 <div class="gng-campo gng-campo-full">
                     <label for="gngDetalle">Observaciones adicionales</label>
-                    <textarea id="gngDetalle" name="detalle" rows="2" placeholder="Indique requerimientos especiales, horario de regreso o detalles de carga..."></textarea>
+                    <textarea id="gngDetalle" name="detalle" rows="2" placeholder="Indique detalles del traslado, equipaje o carga..."></textarea>
                 </div>
             </div>
 
             <div class="gng-nota">
-                Al enviar su solicitud, nuestro equipo verificará disponibilidad con proveedores asociados y le responderá a la brevedad con la cotización formal. Para asegurar su cupo y coordinar la salida, cada reserva se concreta mediante un abono de reserva del 20 % antes de iniciar el servicio.
+                Al enviar su solicitud, coordinamos disponibilidad y tarifa; la reserva se concreta mediante un abono del 20 % una vez confirmada.
             </div>
 
             <div id="gngEstadoEnvio" class="gng-estado-envio" role="status" aria-live="polite"></div>
@@ -1224,7 +1191,7 @@ setInterval(cambiarFotografia, 20000);
             "• *Origen:* " + datos.origen,
             "• *Destino:* " + datos.destino,
             "• *Pasajeros / Carga:* " + datos.pasajeros,
-            "• *Vuelo / Referencia:* " + datos.vuelo,
+            "• *Referencia:* " + datos.vuelo,
             "• *Observaciones:* " + datos.detalle
         ].join("\n");
     }
@@ -1263,10 +1230,10 @@ setInterval(cambiarFotografia, 20000);
                     "Tipo de Servicio": datos.servicio,
                     "Fecha Requerida": datos.fecha,
                     "Hora Estimada": datos.hora,
-                    "Punto de Origen": datos.origen,
-                    "Punto de Destino": datos.destino,
+                    "Lugar de Retiro": datos.origen,
+                    "Lugar de Entrega o Llegada": datos.destino,
                     "Pasajeros o Bultos": datos.pasajeros,
-                    "Vuelo o Referencia": datos.vuelo,
+                    "Referencia": datos.vuelo,
                     "Observaciones": datos.detalle
                 })
             });
